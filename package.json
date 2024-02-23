@@ -1,0 +1,13 @@
+{
+  "name": "pttk_project",
+  "version": "1.0.0",
+  "description": "phan tich thiet ke hcmus 2024",
+  "main": "index.js",
+  "scripts": {
+    "start" : "concurrently \"cd server && node server.js\" \"cd client && npm start\"",
+    "dev:client" : "cd client && npm run dev",
+    "dev:server" : "cd server && npm run dev"
+  },
+  "author": "",
+  "license": "ISC"
+}
