@@ -6,4 +6,5 @@ add package cho project express
 + npm install express-session
 + npm install dotenv
 + npm install cors
++ npm install bcrypt
 

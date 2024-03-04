@@ -7,6 +7,7 @@ let initWebRoutes = (app)=>{
     app.get('/', (req, res) => {
         res.json({message: 'mainpage'});
       });
+    app.get('/finduser', homeController.findUser);
 
     return app.use("/", route)
 }

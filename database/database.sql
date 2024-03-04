@@ -1,0 +1,11 @@
+IF EXISTS (SELECT * FROM sys.databases
+           WHERE name = 'ABC_DB')
+BEGIN
+    DROP DATABASE ABC_DB;
+END
+
+CREATE DATABASE ABC_DB;
+
+USE ABC_DB;
+
+
