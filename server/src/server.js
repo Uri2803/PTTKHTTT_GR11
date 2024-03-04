@@ -1,29 +1,25 @@
-// ****
+import express from "express";
+import bodyParser, { BodyParser } from "body-parser";
+import initWebRoutes from "./route/web";
+import session from "express-session";
+require ('dotenv').config();
+let app = express();
 
-import express from 'express'
-import { mapOrder } from '~/utils/sorts.js'
+//config app
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
 
-const app = express()
+//config session
+app.use(session({
+    secret: 'mySecretKey',
+    resave: false,
+    saveUninitialized: false,
+}));
 
-const hostname = 'localhost'
-const port = 8017
+viewEngine(app);
+initWebRoutes(app);
+let port = process.env.PORT || 6969;
 
-app.get('/', (req, res) => {
-  // Test Absolute import mapOrder
-  // eslint-disable-next-line no-console
-  console.log(mapOrder(
-    [{ id: 'id-1', name: 'One' },
-      { id: 'id-2', name: 'Two' },
-      { id: 'id-3', name: 'Three' },
-      { id: 'id-4', name: 'Four' },
-      { id: 'id-5', name: 'Five' }],
-    ['id-5', 'id-4', 'id-2', 'id-3', 'id-1'],
-    'id'
-  ))
-  res.end('<h1>Hello World!</h1><hr>')
-})
-
-app.listen(port, hostname, () => {
-  // eslint-disable-next-line no-console
-  console.log(`Hello Mach Vi Kiet, I am running at http://${ hostname }:${ port }/`)
+app.listen(port, ()=>{
+    console.log(" runing on the port: "+ port);
 })
