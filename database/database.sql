@@ -8,4 +8,147 @@ CREATE DATABASE ABC_DB;
 
 USE ABC_DB;
 
+CREATE TABLE [ROLE] (
+  [RoleID] CHAR(3) PRIMARY KEY,
+  [RoleName] NVARCHAR(20),
+  [Role_Description] NVARCHAR(30)
+)
+GO
+
+CREATE TABLE [ACCOUNT] (
+  [UserName] VARCHAR(30) PRIMARY KEY,
+  [Password] VARCHAR(300),
+  [RoleID] CHAR(3)
+)
+GO
+
+CREATE TABLE [ENTERPRISE] (
+  [CompanyID] CHAR(5) PRIMARY KEY,
+  [ShortCompanyName] VARCHAR(20),
+  [CompanyName] NVARCHAR(200),
+  [TaxCode] VARCHAR(5),
+  [Address] NVARCHAR(50),
+  [Representative] NVARCHAR(30),
+  [Email] VARCHAR(50),
+  [PhoneNumber] CHAR(10),
+  [CompanyDescription] TEXT
+)
+GO
+
+CREATE TABLE [STAFF] (
+  [StaffID] CHAR(5) PRIMARY KEY,
+  [UserName] VARCHAR(30),
+  [FullName] NVARCHAR(50),
+  [PhoneNumber] CHAR(10),
+  [Address] NVARCHAR(50)
+)
+GO
+
+CREATE TABLE [INFOR_ADVERTISING] (
+  [InforAdvertisingID] CHAR(5) PRIMARY KEY,
+  [CompanyID] CHAR(5),
+  [MethodPosting] NVARCHAR(15),
+  [JobPosition] NVARCHAR(15),
+  [NumberRecruiT] INT,
+  [JobRequirements] TEXT,
+  [PostingTime] DATETIME,
+  [postingEndTime] DATETIME,
+  [StatusPosting] NVARCHAR(10)
+)
+GO
+
+CREATE TABLE [ADVERTISING_FORM] (
+  [FormAvertisingID] CHAR(5) PRIMARY KEY,
+  [InforAdvertisingID] CHAR(5),
+  [Price] BIGINT
+)
+GO
+
+CREATE TABLE [INVOICE] (
+  [InvoiceID] CHAR(5) PRIMARY KEY,
+  [CompanyID] CHAR(5),
+  [FormAvertisingID] CHAR(5),
+  [PaymentDate] DATETIME,
+  [PaymentAmount] BIGINT,
+  [PaymentMethod] NVARCHAR(10),
+  [RemainingAmount] BIGINT,
+  [InvoicingStaff] CHAR(5)
+)
+GO
+
+CREATE TABLE [CANDIDATE] (
+  [CandidateID] CHAR(5) PRIMARY KEY,
+  [UserName] VARCHAR(30)
+  [FullName] NVARCHAR(50),
+  [PhoneNumber] CHAR(10),
+  [Address] NVARCHAR(50),
+  [Email] VARCHAR(50)
+)
+GO
+
+CREATE TABLE [APPLICATION_FORM] (
+  [FormApplicationID] CHAR(5) PRIMARY KEY,
+  [UserName] VARCHAR(30),
+  [CandidateID] CHAR(5),
+  [InforAdvertisingID] CHAR(5),
+  [FileID] CHAR(5),
+  [Check] VARCHAR(5)
+)
+GO
+
+CREATE TABLE [FILE_DEGREE] (
+  [FileID] CHAR(5) PRIMARY KEY,
+  [FileName] NVARCHAR(150),
+  [Content] VARBINARY(MAX)
+)
+GO
+
+CREATE TABLE [CANDIDATE_PROFILE] (
+  [ProfileID] CHAR(5) PRIMARY KEY,
+  [CandidateID] CHAR(5),
+  [InforAdvertisingID] CHAR(5),
+  [FormApplicationID] CHAR(5)
+)
+GO
+
+
+ALTER TABLE [ACCOUNT] ADD FOREIGN KEY ([RoleID]) REFERENCES [ROLE] ([RoleID])
+GO
+
+ALTER TABLE [STAFF] ADD FOREIGN KEY ([UserName]) REFERENCES [ACCOUNT] ([UserName])
+GO
+
+ALTER TABLE [CANDIDATE] ADD FOREIGN KEY ([UserName]) REFERENCES [ACCOUNT] ([UserName])
+GO
+
+ALTER TABLE [INFOR_ADVERTISING] ADD FOREIGN KEY ([CompanyID]) REFERENCES [ENTERPRISE] ([CompanyID])
+GO
+
+ALTER TABLE [ADVERTISING_FORM] ADD FOREIGN KEY ([InforAdvertisingID]) REFERENCES [INFOR_ADVERTISING] ([InforAdvertisingID])
+GO
+
+ALTER TABLE [INVOICE] ADD FOREIGN KEY ([CompanyID]) REFERENCES [ENTERPRISE] ([CompanyID])
+GO
+
+ALTER TABLE [INVOICE] ADD FOREIGN KEY ([FormAvertisingID]) REFERENCES [ADVERTISING_FORM] ([FormAvertisingID])
+GO
+
+ALTER TABLE [APPLICATION_FORM] ADD FOREIGN KEY ([CandidateID]) REFERENCES [CANDIDATE] ([CandidateID])
+GO
+
+ALTER TABLE [FILE_DEGREE] ADD FOREIGN KEY ([FileID]) REFERENCES [APPLICATION_FORM] ([FileID])
+GO
+
+ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([CandidateID]) REFERENCES [CANDIDATE] ([CandidateID])
+GO
+
+ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([InforAdvertisingID]) REFERENCES [INFOR_ADVERTISING] ([InforAdvertisingID])
+GO
+
+ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([FormApplicationID]) REFERENCES [APPLICATION_FORM] ([FormApplicationID])
+GO
+
+ALTER TABLE [INVOICE] ADD FOREIGN KEY ([InvoicingStaff]) REFERENCES [STAFF] ([StaffID])
+GO
+
 
