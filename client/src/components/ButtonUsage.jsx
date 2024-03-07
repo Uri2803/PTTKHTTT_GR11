@@ -1,5 +1,10 @@
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
-export default function ButtonUsage() {
-  return <Button variant="contained">Hello world</Button>;
+// eslint-disable-next-line react/prop-types
+export default function ButtonUsage({ children, variant, sx }) {
+  return (
+    <Button variant={variant ? variant : "contained"} sx={sx}>
+      {children}
+    </Button>
+  );
 }
