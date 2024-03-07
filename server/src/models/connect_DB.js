@@ -1,19 +1,6 @@
 import sql from "mssql";
-import db from "../config/database";
 require ('dotenv').config();
 
-// const config = {
-//     user: db.user,
-//     password: db.password,
-//     server: db.server,
-//     port: 1433,
-//     database: db.database,
-//     options: {
-//         encrypt: true,
-//         trustServerCertificate: true, 
-//     },
-
-// }
 const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

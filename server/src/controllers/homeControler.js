@@ -1,14 +1,29 @@
 import ac from "../models/account";
 
-let findUser = (req, res) =>{
-    const {username} = req.body;
-    ac.findUser(username,(err, username)=>{
-        res.json({username});
-    })
-    
-}
+ let login = (req, res) =>{
+    const {UserName, Password} = req.body;
+    if(UserName && Password){
+        ac.findUser(UserName , (err, user)=>{
+            if (err){
+                res.json({status: false, message: 'Không tìm thấy UserName'});
+            }
+            else{
+                if(user.password = Password){
+                    res.json({status: true, user: user});
+                }
+                else{
+                    res.json({status: false, message: 'Mật khâu không đúng'});
+                }
+            }
+        })
+    }
+    else{
+        res.json({status: false, message: 'Vui lòng nhập UserName VÀ Password'});
+    }
+ }
 
 
 module.exports = {
-    findUser: findUser,
+    login: login,
+
 }
