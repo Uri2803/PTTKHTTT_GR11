@@ -1,6 +1,8 @@
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import Login from "./pages/login";
 import HomePage from "./pages/homePage";
+import CreateCV from "./pages/createCV";
+import CreateCompany from "./pages/createCompany";
 const publicPath = [
   {
     path: "/login",
@@ -23,6 +25,30 @@ const publicPath = [
     ],
     propsLayout: {
         title: 'Home page',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/createCV",
+    content: [
+      {
+        component: <CreateCV/>
+      }
+    ],
+    propsLayout: {
+        title: 'Create CV',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/createCompany",
+    content: [
+      {
+        component: <CreateCompany/>
+      }
+    ],
+    propsLayout: {
+        title: 'Create Company',
         icon: <PermIdentityIcon fontSize="large"/>
     }
   },
