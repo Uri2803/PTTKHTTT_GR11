@@ -6,25 +6,26 @@ const publicPath = [
     path: "/login",
     content: [
       {
-        component: <Login/>
-      }
+        component: <Login />,
+      },
     ],
     propsLayout: {
-        title: 'Login',
-        icon: <PermIdentityIcon fontSize="large"/>
-    }
+      title: "Login",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
   },
+
   {
     path: "/",
     content: [
       {
-        component: <HomePage/>
-      }
+        component: <HomePage />,
+      },
     ],
     propsLayout: {
-        title: 'Home page',
-        icon: <PermIdentityIcon fontSize="large"/>
-    }
+      title: "Home page",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
   },
 ];
 

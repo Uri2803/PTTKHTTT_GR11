@@ -1,5 +1,5 @@
 USE [ABC_DB];
-
+go
 
 -- Add thông tin nhân viên và tạo tài khoản cho nhân viên
 CREATE OR ALTER PROCEDURE ADD_STAFF
@@ -19,6 +19,7 @@ BEGIN
     INSERT INTO [STAFF]
     VALUES (@StaffID,  @username, @fullname, @phonenumber, @address);
 END;
+go
 
 -- Lấy account dựa từ username
 CREATE OR ALTER PROCEDURE FIND_USER
@@ -30,6 +31,7 @@ BEGIN
     JOIN [ROLE] ON [ROLE].RoleID = [ACCOUNT].[RoleID]  
     WHERE [ACCOUNT].[UserName] = @UserName;
 END;
+go
 
 --EXEC FIND_USER 'minhquang2803';
 
@@ -54,6 +56,7 @@ BEGIN
         WHERE [UserName] = @UserName;
     END
 END;
+go
 
 --EXEC FIND_INFOR 'minhquang2803';
 
