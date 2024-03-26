@@ -23,8 +23,8 @@ import {
       >
         <Box
           sx={{
-            width: "60%",
-            maxWidth: "800px",
+            width: "80%",
+            maxWidth: "1200px",
             minWidth: "300px",
             py: "50px",
             px: "50px",

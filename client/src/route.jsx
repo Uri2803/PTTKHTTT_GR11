@@ -3,6 +3,7 @@ import Login from "./pages/login";
 import HomePage from "./pages/homePage";
 import CreateCV from "./pages/createCV";
 import CreateCompany from "./pages/createCompany";
+import JobDetail from "./pages/detailJob";
 const publicPath = [
   {
     path: "/login",
@@ -49,6 +50,18 @@ const publicPath = [
     ],
     propsLayout: {
         title: 'Create Company',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/jobDetail",
+    content: [
+      {
+        component: <JobDetail/>
+      }
+    ],
+    propsLayout: {
+        title: 'Job detail',
         icon: <PermIdentityIcon fontSize="large"/>
     }
   },
