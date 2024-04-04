@@ -24,7 +24,7 @@ function HomePage() {
     <Box
       sx={{
         width: "100%",
-        height: `calc(100vh - ${theme.app.HEIGHT_HEADER})`,
+        minHeight: `calc(100vh - ${theme.app.HEIGHT_HEADER})`,
       }}
     >
       <Typography
@@ -40,16 +40,19 @@ function HomePage() {
       </Typography>
 
       <Grid container spacing={2} sx={{ width: "100%" }}>
-        {["", "", "", "", ""].map((container, index) => {
+        {["", "", "", "", "","", "", "", "", "","", "", "", "", "","", "", "", "", "","", "", "", "", ""].map((container, index) => {
           return (
             <Grid xs={4} key={index}>
               <Item
                 sx={{
                   width: "100%",
-                  minHeight: "170px",
+                  minHeight: "150px",
                   height: "100%",
                   borderRadius: "40px",
                   padding: "20px",
+                  "&:hover": {
+                    cursor: "pointer",
+                  }
                 }}
               >
                 <Card
@@ -97,22 +100,26 @@ function HomePage() {
                   {["UI Designer", "figma", "Landing Page"].map(
                     (title, index) => {
                       return (
-                        <Button
+                        <Button 
+                        key = {index}
                           variant="contained"
+                          onClick={(e) => {
+                            console.log("aaaa");
+                            e.stopPropagation();
+                          }}
                           sx={{
                             borderRadius: "20px",
                             padding: "5px 10px",
                             mr: 1,
-                            bgcolor: '#fff',
+                            bgcolor: "#fff",
                             color: theme.color.main,
+                            fontSize: "12px",
                             boxShadow:
                               "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-                            '&:hover': {
-                                // color: '#fff',
-                                bgcolor: '#eee'
-                            }
+                            "&:hover": {
+                              bgcolor: "#eee",
+                            },
                           }}
-                          key={index}
                         >
                           {title}
                         </Button>

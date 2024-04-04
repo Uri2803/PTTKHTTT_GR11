@@ -1,5 +1,5 @@
 import express from 'express'
-import bodyParser, { BodyParser } from 'body-parser'
+import bodyParser from 'body-parser'
 import initWebRoutes from './routes/web'
 import session from 'express-session'
 import cors from 'cors'
@@ -28,5 +28,5 @@ let port = process.env.PORT || 6969
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(' runing on the port: '+ port)
+  console.log('Server is running : http://localhost:'+ port + '/')
 })
