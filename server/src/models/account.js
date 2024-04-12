@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 const { sql, con, connectToDatabase } = require('./connect_DB')
-import bcrypt from 'bcrypt'
+// import bcrypt from 'bcrypt'
 
 let findUser = async (UserName, result) => {
   try {
-    console.log('Username', UserName)
     await connectToDatabase()
     const request = con.request()
     request.input('UserName', sql.VarChar(30), UserName)

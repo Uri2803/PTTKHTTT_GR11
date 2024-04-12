@@ -5,10 +5,10 @@ let login = (req, res) => {
   const { UserName, Password } = req.body
   if (UserName && Password) {
     ac.findUser(UserName, (err, user) => {
-      if (!user?.password) {
+      if (!user?.Password) {
         res.json({ status: false, message: 'Không tìm thấy UserName' })
       }
-      else if (user?.password && user.password == Password) {
+      else if (user?.Password && user.Password == Password) {
         res.json({ status: true, user: user })
       }
       else {

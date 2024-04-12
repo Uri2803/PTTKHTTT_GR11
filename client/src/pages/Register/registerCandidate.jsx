@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import {
   Box,
-  Button,
   FormControl,
   IconButton,
   InputAdornment,
@@ -14,31 +13,17 @@ import { theme } from "~/theme";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import HttpsIcon from "@mui/icons-material/Https";
 import { Link } from "react-router-dom";
+import ButtonUsage from "~/components/ButtonUsage";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import DateRangeIcon from '@mui/icons-material/DateRange';
 
-import api from "~/apis";
-
-function Login() {
+function RegisterCandidate() {
   const [showPassword, setShowPassword] = useState(false);
-
-  const [usrname, setusrname] = useState("");
-  const [password, setpassword] = useState("");
-  const [typeNotif, settypeNotif] = useState(true);
-  const [messNotif, setmessNotif] = useState("");
-  const [hiddenNotif, sethiddenNotif] = useState(true);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
-  };
-
-  const submitButton = async () => {
-    console.log(usrname, password);
-    const res = await api.login(usrname, password);
-    console.log(res);
-    sethiddenNotif(false);
-    settypeNotif(res.status);
-    setmessNotif(res?.message);
   };
 
   return (
@@ -51,20 +36,6 @@ function Login() {
         height: `calc(100vh - ${theme.app.HEIGHT_HEADER})`,
       }}
     >
-      {/* <Alert variant="outlined" severity="success">
-        This is an outlined success Alert.
-      </Alert> */}
-      {/* <Box
-        sx={{
-          position: "fixed",
-          top: "120px",
-          right: "40px",
-        }}
-      >
-        <Alert variant="outlined" severity="error">
-          This is an outlined error Alert.
-        </Alert>
-      </Box> */}
       <Box
         sx={{
           width: "80%",
@@ -73,13 +44,38 @@ function Login() {
           py: "50px",
           px: "50px",
           bgcolor: theme.bgColor.block,
-          borderRadius: "10px",
+          borderRadius: '10px'
         }}
       >
         <Typography variant="h5" sx={{ fontWeight: "700", pb: 3 }}>
-          Login
+          Candidate Register
         </Typography>
 
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-fullname">Fullname</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-fullname"
+            startAdornment={
+              <InputAdornment position="start">
+                <AccountCircleIcon />
+              </InputAdornment>
+            }
+            label="fullname"
+          />
+        </FormControl>
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-birth">Birth</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-birth"
+            type= "date"
+            startAdornment={
+              <InputAdornment position="start">
+                <DateRangeIcon />
+              </InputAdornment>
+            }
+            label="birth"
+          />
+        </FormControl>
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
           <OutlinedInput
@@ -90,10 +86,6 @@ function Login() {
               </InputAdornment>
             }
             label="Email"
-            value={usrname}
-            onChange={(e) => {
-              setusrname(e.target.value);
-            }}
           />
         </FormControl>
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
@@ -103,11 +95,7 @@ function Login() {
           <OutlinedInput
             id="outlined-adornment-password"
             type={showPassword ? "text" : "password"}
-            startAdornment={
-              <InputAdornment position="start">
-                <HttpsIcon />
-              </InputAdornment>
-            }
+            startAdornment={<InputAdornment position="start"><HttpsIcon/></InputAdornment>}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -115,27 +103,21 @@ function Login() {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {/* {showPassword ? <VisibilityIcon/> : <VisibilityOffIcon />} */}
                 </IconButton>
               </InputAdornment>
             }
-            value={password}
-            onChange={(e) => {
-              setpassword(e.target.value);
-            }}
             label="Password"
           />
         </FormControl>
 
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Link to="/register">Don't have account ?</Link>
+        <Box sx = {{
+          display: 'flex',
+          justifyContent: 'flex-end'
+        }}>
+                <Link to="/login">I have account before !</Link>
+        
         </Box>
-
+          
         <Box
           sx={{
             display: "flex",
@@ -144,22 +126,11 @@ function Login() {
             pt: "10px",
           }}
         >
-          <Button variant="contained" onClick={submitButton}>
-            Submit
-          </Button>
+          <ButtonUsage>Submit</ButtonUsage>
         </Box>
-        <Typography
-          color={typeNotif ? "#4caf50" : "error"}
-          sx={{
-            display: hiddenNotif ? "none" : "block",
-            pt: "10px",
-          }}
-        >
-          {typeNotif ? "Success" : messNotif}
-        </Typography>
       </Box>
     </Box>
   );
 }
 
-export default Login;
+export default RegisterCandidate;

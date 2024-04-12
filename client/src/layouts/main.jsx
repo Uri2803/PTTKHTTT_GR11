@@ -2,7 +2,10 @@
 import { Box, Container, Typography } from "@mui/material";
 import { theme } from "~/theme";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import { Link } from "react-router-dom";
+
 function DefaultLayout({ props, children }) {
+
   return (
     <>
       {console.log("layout", props)}
@@ -18,6 +21,8 @@ function DefaultLayout({ props, children }) {
             bgcolor: theme.bgColor.block,
             width: "100%",
             position: "fixed",
+            zIndex: 100,
+            borderBottom: "0.5px solid #ccc",
           }}
         >
           <Container
@@ -28,14 +33,17 @@ function DefaultLayout({ props, children }) {
               alignItems: "center",
             }}
           >
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: "700",
-              }}
-            >
-              Jobs
-            </Typography>
+            <Link to="/" style={{ textDecoration: 'none'}}>
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: "700",
+                  color: '#000',
+                }}
+              >
+                Jobs
+              </Typography>
+            </Link>
             <Typography
               variant="h5"
               sx={{
@@ -44,13 +52,26 @@ function DefaultLayout({ props, children }) {
             >
               {props?.title ? props.title : "Empty"}
             </Typography>
-            <Box>
-              {props?.icon ? (
-                props.icon
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {props?.isLogin ? (
+                props?.icon ? (
+                  <>
+                    {props.icon}
+                    <Typography variant="body1">Mạch Vĩ Kiệt</Typography>
+                  </>
+                ) : (
+                  <>
+                    <CheckBoxOutlineBlankOutlinedIcon />
+                  </>
+                )
               ) : (
-                <>
-                  <CheckBoxOutlineBlankOutlinedIcon />
-                </>
+                <Link to="/login">Vui lòng đăng nhập</Link>
               )}
             </Box>
           </Container>
@@ -59,7 +80,7 @@ function DefaultLayout({ props, children }) {
         <Box>
           <Container
             sx={{
-              pt: "69px",
+              py: "69px",
             }}
           >
             <Box>{children}</Box>
