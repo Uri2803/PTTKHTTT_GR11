@@ -4,10 +4,16 @@
   "description": "phan tich thiet ke hcmus 2024",
   "main": "index.js",
   "scripts": {
-    "start" : "concurrently \"cd server && node server.js\" \"cd client && npm start\"",
-    "dev:client" : "cd client && npm run dev",
-    "dev:server" : "cd server && npm run dev"
+    "start": "concurrently \"cd server && node server.js\" \"cd client && npm start\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "icons": "^1.0.0",
+    "react": "^18.2.0",
+    "react-icons": "^5.0.1"
+  }
 }
