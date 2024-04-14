@@ -3,7 +3,7 @@ import Login from "./pages/login";
 import HomePage from "./pages/homePage";
 import CreateCV from "./pages/createCV";
 import CreateCompany from "./pages/createCompany";
-import JobDetail from "./pages/detailJob";
+import CompanyPage from "./pages/companyPage";
 const publicPath = [
   {
     path: "/login",
@@ -54,17 +54,17 @@ const publicPath = [
     }
   },
   {
-    path: "/jobDetail",
+    path: "/companyPage",
     content: [
       {
-        component: <JobDetail/>
+        component: <CompanyPage/>
       }
     ],
     propsLayout: {
-        title: 'Job detail',
+        title: 'Company Page',
         icon: <PermIdentityIcon fontSize="large"/>
     }
-  },
+  }
 ];
 
 export const route = {
