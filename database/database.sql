@@ -14,7 +14,7 @@ GO
 CREATE TABLE [ACCOUNT] (
   [UserName] VARCHAR(20) PRIMARY KEY,
   [Password] VARCHAR(200),
-  [EmployeeID] CHAR(5)
+  [EmployeeID] VARCHAR(5)
 )
 GO
 
