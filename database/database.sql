@@ -1,3 +1,12 @@
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'ABC_DB')
+BEGIN
+    CREATE DATABASE ABC_DB;
+END
+GO
+
+USE ABC_DB;
+GO
+
 CREATE TABLE [ACCOUNT] (
   [UserName] VARCHAR(20) PRIMARY KEY,
   [Password] VARCHAR(200),
@@ -88,7 +97,7 @@ CREATE TABLE [REGISTRATION_RENEWAL_FORM] (
 GO
 
 CREATE TABLE [Receipts] (
-  [ReceiptsID] VARCHAR(5),
+  [ReceiptsID] VARCHAR(5) PRIMARY KEY,
   [RegistFormID] VARCHAR(5),
   [TotalMoney] INT,
   [ServiceDescription] TEXT
@@ -96,7 +105,7 @@ CREATE TABLE [Receipts] (
 GO
 
 CREATE TABLE [BILL] (
-  [BillID] VARCHAR(5),
+  [BillID] VARCHAR(5) PRIMARY KEY,
   [ReceiptsID] VARCHAR(5),
   [EnterpriseID] VARCHAR(5),
   [TotalMoney] INT,
