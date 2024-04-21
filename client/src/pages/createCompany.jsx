@@ -65,7 +65,7 @@ import {
              pt:"30px"
            }}
          >
-           <Button variant="contained">See some jobs</Button>
+           <Button variant="contained">Submit</Button>
          </Box>
        </Box>
      </Box>   
