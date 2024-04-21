@@ -1,7 +1,11 @@
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'ABC_DB')
+IF EXISTS (SELECT * FROM sys.databases
+           WHERE name = 'ABC_DB')
 BEGIN
-    CREATE DATABASE ABC_DB;
+    DROP DATABASE ABC_DB;
 END
+GO
+
+CREATE DATABASE ABC_DB;
 GO
 
 USE ABC_DB;
