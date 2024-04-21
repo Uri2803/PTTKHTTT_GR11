@@ -1,156 +1,135 @@
-IF EXISTS (SELECT * FROM sys.databases
-           WHERE name = 'ABC_DB')
-BEGIN
-    DROP DATABASE ABC_DB;
-END
-
-CREATE DATABASE ABC_DB;
-
-USE ABC_DB;
-
-CREATE TABLE [ROLE] (
-  [RoleID] CHAR(3) PRIMARY KEY,
-  [RoleName] NVARCHAR(20),
-  [Role_Description] NVARCHAR(30)
+CREATE TABLE [ACCOUNT] (
+  [UserName] VARCHAR(20) PRIMARY KEY,
+  [Password] VARCHAR(200),
+  [EmployeeID] CHAR(5)
 )
 GO
 
-CREATE TABLE [ACCOUNT] (
-  [UserName] VARCHAR(30) PRIMARY KEY,
-  [Password] VARCHAR(300),
-  [RoleID] CHAR(3)
+CREATE TABLE [EMPLOYEE] (
+  [EmployeeID] VARCHAR(5) PRIMARY KEY,
+  [FullName] NVARCHAR(50),
+  [Address] NVARCHAR(100),
+  [PhoneNumber] CHAR(10),
+  [Position] NVARCHAR(20)
 )
 GO
 
 CREATE TABLE [ENTERPRISE] (
-  [CompanyID] CHAR(5) PRIMARY KEY,
-  [ShortCompanyName] VARCHAR(20),
-  [CompanyName] NVARCHAR(200),
-  [TaxCode] VARCHAR(5),
-  [Address] NVARCHAR(50),
-  [Representative] NVARCHAR(30),
+  [EnterpriseID] VARCHAR(5) PRIMARY KEY,
+  [Name] NVARCHAR(100),
+  [TaxCode] VARCHAR(10),
   [Email] VARCHAR(50),
-  [PhoneNumber] CHAR(10),
-  [CompanyDescription] TEXT,
-  [Status] NVARCHAR(20),
-  [ApproveDate] DATETIME
-)
-GO
-
-CREATE TABLE [STAFF] (
-  [StaffID] CHAR(5) PRIMARY KEY,
-  [UserName] VARCHAR(30),
-  [FullName] NVARCHAR(50),
-  [PhoneNumber] CHAR(10),
-  [Address] NVARCHAR(50)
-)
-GO
-
-CREATE TABLE [INFOR_ADVERTISING] (
-  [InforAdvertisingID] CHAR(5) PRIMARY KEY,
-  [CompanyID] CHAR(5),
-  [MethodPosting] NVARCHAR(15),
-  [JobPosition] NVARCHAR(15),
-  [NumberRecruiT] INT,
-  [JobRequirements] TEXT,
-  [PostingTime] DATETIME,
-  [postingEndTime] DATETIME,
-  [StatusPosting] NVARCHAR(10)
-)
-GO
-
-CREATE TABLE [ADVERTISING_FORM] (
-  [FormAvertisingID] CHAR(5) PRIMARY KEY,
-  [InforAdvertisingID] CHAR(5),
-  [Price] BIGINT
-)
-GO
-
-CREATE TABLE [INVOICE] (
-  [InvoiceID] CHAR(5) PRIMARY KEY,
-  [CompanyID] CHAR(5),
-  [FormAvertisingID] CHAR(5),
-  [PaymentDate] DATETIME,
-  [PaymentAmount] BIGINT,
-  [PaymentMethod] NVARCHAR(10),
-  [RemainingAmount] BIGINT,
-  [InvoicingStaff] CHAR(5)
+  [Address] NVARCHAR(100),
+  [Representative] NVARCHAR(50),
+  [Censorship] NVARCHAR(10)
 )
 GO
 
 CREATE TABLE [CANDIDATE] (
   [CandidateID] CHAR(5) PRIMARY KEY,
-  [UserName] VARCHAR(30),
   [FullName] NVARCHAR(50),
+  [Birthday] DATE,
   [PhoneNumber] CHAR(10),
-  [Address] NVARCHAR(50),
-  [Email] VARCHAR(50)
+  [Address] NVARCHAR(100)
 )
 GO
 
-CREATE TABLE [APPLICATION_FORM] (
-  [FormApplicationID] CHAR(5) PRIMARY KEY,
-  [UserName] VARCHAR(30),
+CREATE TABLE [APPLICATION] (
+  [ApplicationID] VARCHAR(5) PRIMARY KEY,
   [CandidateID] CHAR(5),
-  [InforAdvertisingID] CHAR(5),
-  [FileID] CHAR(5),
-  [Check] VARCHAR(5)
+  [ApprovalDate] DATE,
+  [ApplicationStatus] NVARCHAR(15)
 )
 GO
 
-CREATE TABLE [FILE_DEGREE] (
-  [FileID] CHAR(5) PRIMARY KEY,
-  [FileName] NVARCHAR(150),
-  [Content] VARBINARY(MAX)
+CREATE TABLE [APPLICATION_REGISTRATION_FORM] (
+  [RegistFormID] VARCHAR(5) PRIMARY KEY,
+  [ApplicationID] VARCHAR(5),
+  [Position] NVARCHAR(20),
+  [RegistDate] DATE,
+  [RegistFormStatus] NVARCHAR(15)
 )
 GO
 
-CREATE TABLE [CANDIDATE_PROFILE] (
-  [ProfileID] CHAR(5) PRIMARY KEY,
-  [CandidateID] CHAR(5),
-  [InforAdvertisingID] CHAR(5),
-  [FormApplicationID] CHAR(5)
+CREATE TABLE [DOCUMENT] (
+  [DocumentID] VARCHAR(5) PRIMARY KEY,
+  [ApplicationID] VARCHAR(5),
+  [DegreeType] NVARCHAR(20),
+  [DateRange] DATE
 )
 GO
 
-
-ALTER TABLE [ACCOUNT] ADD FOREIGN KEY ([RoleID]) REFERENCES [ROLE] ([RoleID])
+CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
+  [RegistFormID] VARCHAR(5) PRIMARY KEY,
+  [EnterpriseID] VARCHAR(5),
+  [PostingTime] DATE,
+  [PositionVacancies] NVARCHAR(15),
+  [NumberRecruitment] INT,
+  [RequiredCandidates] TEXT
+)
 GO
 
-ALTER TABLE [STAFF] ADD FOREIGN KEY ([UserName]) REFERENCES [ACCOUNT] ([UserName])
+CREATE TABLE [POSTING_INFORMATION] (
+  [PostingID] VARCHAR(5) PRIMARY KEY,
+  [RegistFormID] VARCHAR(5),
+  [JobDescription] TEXT,
+  [Welfare] TEXT,
+  [ExpectedSalary] INT
+)
 GO
 
-ALTER TABLE [CANDIDATE] ADD FOREIGN KEY ([UserName]) REFERENCES [ACCOUNT] ([UserName])
+CREATE TABLE [REGISTRATION_RENEWAL_FORM] (
+  [RegistRenewalFormID] VARCHAR(5) PRIMARY KEY,
+  [RegistFormID] VARCHAR(5),
+  [ExtendedTime] NVARCHAR(20),
+  [AmendmentDetails] TEXT,
+  [IncentiveStrategy] TEXT
+)
 GO
 
-ALTER TABLE [INFOR_ADVERTISING] ADD FOREIGN KEY ([CompanyID]) REFERENCES [ENTERPRISE] ([CompanyID])
+CREATE TABLE [Receipts] (
+  [ReceiptsID] VARCHAR(5),
+  [RegistFormID] VARCHAR(5),
+  [TotalMoney] INT,
+  [ServiceDescription] TEXT
+)
 GO
 
-ALTER TABLE [ADVERTISING_FORM] ADD FOREIGN KEY ([InforAdvertisingID]) REFERENCES [INFOR_ADVERTISING] ([InforAdvertisingID])
+CREATE TABLE [BILL] (
+  [BillID] VARCHAR(5),
+  [ReceiptsID] VARCHAR(5),
+  [EnterpriseID] VARCHAR(5),
+  [TotalMoney] INT,
+  [ServiceDescription] TEXT
+)
 GO
 
-ALTER TABLE [INVOICE] ADD FOREIGN KEY ([CompanyID]) REFERENCES [ENTERPRISE] ([CompanyID])
+ALTER TABLE [ACCOUNT] ADD FOREIGN KEY ([EmployeeID]) REFERENCES [EMPLOYEE] ([EmployeeID])
 GO
 
-ALTER TABLE [INVOICE] ADD FOREIGN KEY ([FormAvertisingID]) REFERENCES [ADVERTISING_FORM] ([FormAvertisingID])
+ALTER TABLE [APPLICATION] ADD FOREIGN KEY ([ApplicationID]) REFERENCES [APPLICATION_REGISTRATION_FORM] ([ApplicationID])
 GO
 
-ALTER TABLE [APPLICATION_FORM] ADD FOREIGN KEY ([CandidateID]) REFERENCES [CANDIDATE] ([CandidateID])
+ALTER TABLE [APPLICATION] ADD FOREIGN KEY ([ApplicationID]) REFERENCES [DOCUMENT] ([ApplicationID])
 GO
 
-ALTER TABLE [FILE_DEGREE] ADD FOREIGN KEY ([FileID]) REFERENCES [APPLICATION_FORM] ([FileID])
+ALTER TABLE [APPLICATION] ADD FOREIGN KEY ([CandidateID]) REFERENCES [CANDIDATE] ([CandidateID])
 GO
 
-ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([CandidateID]) REFERENCES [CANDIDATE] ([CandidateID])
+ALTER TABLE [RECRUITMENT_REGISTRATION_FORM] ADD FOREIGN KEY ([EnterpriseID]) REFERENCES [ENTERPRISE] ([EnterpriseID])
 GO
 
-ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([InforAdvertisingID]) REFERENCES [INFOR_ADVERTISING] ([InforAdvertisingID])
+ALTER TABLE [POSTING_INFORMATION] ADD FOREIGN KEY ([RegistFormID]) REFERENCES [RECRUITMENT_REGISTRATION_FORM] ([RegistFormID])
 GO
 
-ALTER TABLE [CANDIDATE_PROFILE] ADD FOREIGN KEY ([FormApplicationID]) REFERENCES [APPLICATION_FORM] ([FormApplicationID])
+ALTER TABLE [REGISTRATION_RENEWAL_FORM] ADD FOREIGN KEY ([RegistRenewalFormID]) REFERENCES [RECRUITMENT_REGISTRATION_FORM] ([RegistFormID])
 GO
 
-ALTER TABLE [INVOICE] ADD FOREIGN KEY ([InvoicingStaff]) REFERENCES [STAFF] ([StaffID])
+ALTER TABLE [Receipts] ADD FOREIGN KEY ([ReceiptsID]) REFERENCES [RECRUITMENT_REGISTRATION_FORM] ([RegistFormID])
 GO
 
+ALTER TABLE [BILL] ADD FOREIGN KEY ([ReceiptsID]) REFERENCES [Receipts] ([ReceiptsID])
+GO
 
+ALTER TABLE [BILL] ADD FOREIGN KEY ([EnterpriseID]) REFERENCES [ENTERPRISE] ([EnterpriseID])
+GO
