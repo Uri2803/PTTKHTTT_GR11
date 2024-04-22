@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
 const { sql, con, connectToDatabase } = require('./connect_DB')
-import bcrypt from 'bcrypt'
 
-let Login = async (account, result) => {
+let CreateComapany = async (co, result) => {
   try {
     await connectToDatabase()
     const request = con.request()
@@ -22,5 +20,5 @@ let Login = async (account, result) => {
 
 
 module.exports = {
-  Login:Login
+    CreateComapany: CreateComapany,
 }
