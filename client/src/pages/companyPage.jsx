@@ -53,7 +53,7 @@ const CompanyPage = () => {
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button variant="contained" sx={{ backgroundColor: "#4caf50", color: "white" }}>
-            Apply now
+            Go back
           </Button>
         </Box>
       </Box>

@@ -57,6 +57,7 @@ function CreateCV() {
        </FormControl>
 
        {/* Submit button */}
+       
        <Box
          sx={{
            display:"flex",
@@ -65,7 +66,19 @@ function CreateCV() {
            pt:"30px"
          }}
        >
-         <Button variant="contained">Submit and Apply</Button>
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#4caf50",
+              color: "white",
+            }}
+          >
+            Go back
+          </Button>
+        </Box>
+         <Button variant="contained">Submit</Button>
+         
        </Box>
      </Box>
    </Box>   
