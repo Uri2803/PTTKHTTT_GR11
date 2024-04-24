@@ -1,28 +1,31 @@
 /* eslint-disable no-cond-assign */
+// import { status } from 'express/lib/response'
 import ac from '../models/account'
 
 let login = (req, res) => {
   const { UserName, Password } = req.body
   if (UserName && Password) {
-    ac.findUser(UserName, (err, user) => {
-      if (!user?.Password) {
-        res.json({ status: false, message: 'Không tìm thấy UserName' })
-      }
-      else if (user?.Password && user.Password == Password) {
-        res.json({ status: true, user: user })
-      }
-      else {
-        res.json({ status: false, message: 'Mật khâu không đúng' })
+    const account = { UserName, Password }
+    ac.Login(account, (err, employeeID) => {
+      if (err) {
+        res.json({
+          status: false,
+          message: 'Username hoặc Password không chính xác'
+        })
+      } else if (employeeID == '00000') {
+        res.json({
+          status: false,
+          message: 'Username hoặc Password không chính xác'
+        })
+      } else {
+        res.json({ status: true, employeeID: employeeID })
       }
     })
-  }
-  else {
+  } else {
     res.json({ status: false, message: 'Vui lòng nhập UserName VÀ Password' })
   }
 }
 
-
 module.exports = {
   login: login
-
 }

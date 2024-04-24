@@ -9,7 +9,9 @@ let initWebRoutes = (app) => {
   })
 
   app.post('/login', homeController.login)
-  // Thêm routing tại đây 
+  // Thêm routing tại đây
+
+  app.get('/login', homeController.login)
 
   return app.use('/', route)
 }
