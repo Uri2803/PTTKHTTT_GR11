@@ -1,13 +1,18 @@
 const { sql, con, connectToDatabase } = require('./connect_DB')
 
-let CreateComapany = async (co, result) => {
+let Create = async (co, result) => {
   try {
     await connectToDatabase()
     const request = con.request()
-    request.input('username', sql.VarChar(30), account.UserName)
-    request.input('password', sql.VarChar(30), account.Password)
-    const res = await request.query('SELECT dbo.Login(@username, @password) AS RES')
-    return result(null, res.recordset[0].RES) 
+    request.input('compayname', sql.NVARCHAR(100), con.CompanyName)
+    request.input('email', sql.VARCHAR(50), co.Email)
+    request.input('phonenumber', sql.CHAR(10), co.PhoneNumber )
+    request.input('taxcode', sql.VARCHAR(10), co.TaxCode)
+    request.input('address', sql.NVARCHAR(100), co.Address)
+    request.input('companyrepresentative', sql.NVARCHAR(50), co.CompanyRepresentative )
+    request.input('companydescription', sql.NVARCHAR(500), co.CompanyDescription)
+    const res = await request.query('EXEC CREATE_COMPANY @compayname, @email, @phonenumber, @taxcode, @address, @companyrepresentative, @companydescription')
+    return result(null, 'Thêm công ty thành công') 
   }
   catch (err) {
     console.log(err)
@@ -17,8 +22,6 @@ let CreateComapany = async (co, result) => {
     sql.close()
   }
 }
-
-
 module.exports = {
-    CreateComapany: CreateComapany,
+    Create: Create,
 }

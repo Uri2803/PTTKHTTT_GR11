@@ -1,5 +1,6 @@
 import express from 'express'
 import * as homeController from '../controllers/homeControler'
+import * as companyControler from '../controllers/companyControler'
 let route=express.Router()
 
 let initWebRoutes = (app) => {
@@ -8,7 +9,10 @@ let initWebRoutes = (app) => {
     res.json({ message: 'mainpage' })
   })
 
-  app.get('/login', homeController.login)
+  app.post('/login', homeController.login)
+
+  app.post('/createcompany', companyControler.CreateCompany)
+
   
   return app.use('/', route)
 }

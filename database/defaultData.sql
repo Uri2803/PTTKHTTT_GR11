@@ -1,6 +1,14 @@
 USE [ABC_DB];
 GO
 
+INSERT INTO [ROLE] ([RoleName], [RoleDicription])
+VALUES (N'Nhân viên', N'Tài khoản dành cho nhân viên công ty ABC')
+GO
+INSERT INTO [ROLE] ([RoleName], [RoleDicription])
+VALUES (N'Ứng viên', N'Tài khoản dành cho ứng viên')
+GO
+
+
 
 ------ Nhân viên công ty
 EXEC ADD_EMPLOYEE N'Huỳnh Minh Quang', N'Tân Quy, Quận 7, HCM', '0382333045', N'Quản trị viên', 'minhquang2803', 'minhquangabcnv';
@@ -27,4 +35,5 @@ GO
 ------
 
 
-
+EXEC ADD_CANDIDATE  N'Phạm Thị Hồng', '1993-09-20', '0367890123', N'Hải Phòng', 'phamhong', 'hong123';
+GO
