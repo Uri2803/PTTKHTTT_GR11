@@ -42,7 +42,7 @@ BEGIN
         DECLARE @roleid INT;
         SELECT @NextID = COUNT([EmployeeID]) +1  FROM [EMPLOYEE] 
         SET @EmployeeID = 'NV' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
-        SET @roleid = (SELECT [RoleID] FROM [ROLE] WHERE [RoleName] = 'Nhân viên');
+        SET @roleid = (SELECT [RoleID] FROM [ROLE] WHERE [RoleName] = N'Nhân viên');
         SET @hashpassword = dbo.HashPassword(@password);  
         INSERT INTO [ACCOUNT]
         VALUES (@username, @hashpassword, @roleid); 
@@ -51,6 +51,39 @@ BEGIN
     END
 END;
 GO
+
+-- Add thông tin nhân viên và tạo tài khoản cho ứng viên
+CREATE OR ALTER PROCEDURE ADD_CANDIDATE
+    @fullname NVARCHAR(50),
+    @birthday DATE,
+    @phonenumber CHAR(10),
+    @address NVARCHAR(50),
+    @username VARCHAR(30),
+    @password VARCHAR(300)
+AS
+BEGIN
+    IF EXISTS (Select * FROM [ACCOUNT] WHERE [UserName] = @username)
+    BEGIN
+        RAISERROR ('Tài khoản đã tồn tại', 16, 1);
+    END
+    ELSE
+    BEGIN
+        DECLARE @NextID INT;
+        DECLARE @CandidateID CHAR(5);
+        DECLARE @hashpassword VARCHAR(300);
+        DECLARE @roleid INT;
+        SELECT @NextID = COUNT([CandidateID]) +1  FROM [CANDIDATE] 
+        SET @CandidateID = 'CD' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+        SET @roleid = (SELECT [RoleID] FROM [ROLE] WHERE [RoleName] = N'Ứng viên');
+        SET @hashpassword = dbo.HashPassword(@password);  
+        INSERT INTO [ACCOUNT]
+        VALUES (@username, @hashpassword, @roleid); 
+        INSERT INTO [CANDIDATE]
+        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @address);  
+    END
+END;
+GO
+
 
 
 CREATE OR ALTER PROCEDURE LOGIN 
@@ -62,7 +95,7 @@ BEGIN
     SET @hashpassword = dbo.HashPassword(@password);
     IF EXISTS (SELECT 1 FROM [ACCOUNT] WHERE [ACCOUNT].UserName = @username AND [ACCOUNT].[Password] = @hashpassword)
     BEGIN
-       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) ='Nhân viên'
+       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Nhân viên'
        BEGIN
             SELECT E.EmployeeID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC
@@ -70,7 +103,7 @@ BEGIN
             JOIN [EMPLOYEE] E ON E.UserName = [AC].UserName
             WHERE AC.UserName =@username;
        END
-       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) ='Ứng viên'
+       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Ứng viên'
        BEGIN
             SELECT C.CandidateID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC

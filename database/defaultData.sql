@@ -35,4 +35,5 @@ GO
 ------
 
 
-
+EXEC ADD_CANDIDATE  N'Phạm Thị Hồng', '1993-09-20', '0367890123', N'Hải Phòng', 'phamhong', 'hong123';
+GO
