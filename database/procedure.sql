@@ -151,20 +151,42 @@ BEGIN
     DECLARE @roleID CHAR(3);
     SELECT @roleID = [ACCOUNT].RoleID FROM [ACCOUNT] WHERE [UserName] = @UserName;
 
-    IF @roleID = 'RL1'
+    IF @roleID = '1'
     BEGIN
         SELECT *
-        FROM [STAFF]
+        FROM [EMPLOYEE]
         WHERE [UserName] = @UserName; 
     END
-    IF @roleID = 'RL2'
+    IF @roleID = '2'
     BEGIN
         SELECT *
         FROM [CANDIDATE]
         WHERE [UserName] = @UserName;
     END
 END;
-go
+GO
 
 --EXEC FIND_INFOR 'minhquang2803';
+
+-- Lấy thông tin công ty 
+
+CREATE OR ALTER PROCEDURE GET_COMPANY_INFOR
+    @companyID VARCHAR(5)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyID)
+    BEGIN
+        RAISERROR ('Không tìm thấy công ty', 16, 1);
+    END
+    ELSE
+    BEGIN
+        SELECT *
+        FROM [COMPANY]
+        WHERE [CompanyID] =@companyID;
+    END
+END;
+GO
+
+EXEC GET_COMPANY_INFOR 'CO001';
+
 

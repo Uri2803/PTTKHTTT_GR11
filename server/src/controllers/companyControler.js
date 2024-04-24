@@ -12,6 +12,7 @@ let CreateCompany = (req, res) =>{
             res.json({status: false, message: 'Lỗi: không thể thêm công ty, vui lòng thử lại'})
         }
         else{
+            console.log(co.CompanyName)
             res.json({status: true, message:message})
         }
     })
@@ -21,7 +22,20 @@ let CreateCompany = (req, res) =>{
 
 }
 
+let GetCompanyInfor = (req, res) =>{
+    const {companyID} = req.body;
+    company.GetInfor(companyID, (err, companyInfor)=>{
+        if(err){
+            res.json({status: false, message: 'Không tìm thấy company'})
+        }
+        else {
+            res.json({status: true, companyInfor: companyInfor})
+        }
+    })
+}
+
 module.exports = {
     CreateCompany: CreateCompany,
+    GetCompanyInfor: GetCompanyInfor,
 
 }

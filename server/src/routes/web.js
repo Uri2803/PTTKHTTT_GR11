@@ -12,7 +12,7 @@ let initWebRoutes = (app) => {
   app.post('/login', homeController.login)
 
   app.post('/createcompany', companyControler.CreateCompany)
-
+  app.get('/getcompanyinfor', companyControler.GetCompanyInfor)
   
   return app.use('/', route)
 }
