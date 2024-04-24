@@ -1,4 +1,4 @@
-import { url } from "~/apis/Config";
+import { url } from "~/apis/config";
 
 const example = async (/* Truyền tham số */) => {
   return fetch(url.REST_API + "/login", {
