@@ -30,72 +30,83 @@ CREATE OR ALTER PROCEDURE ADD_EMPLOYEE
     @password VARCHAR(300)
 AS
 BEGIN
-    DECLARE @NextID INT;
-    DECLARE @EmployeeID CHAR(5);
-    DECLARE @hashpassword VARCHAR(300);
-    SELECT @NextID = COUNT([EmployeeID]) +1  FROM [EMPLOYEE] 
-    SET @EmployeeID = 'NV' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
-    INSERT INTO [EMPLOYEE]
-    VALUES (@EmployeeID, @fullname, @address, @phonenumber, @position);
-    SET @hashpassword = dbo.HashPassword(@password);
-    INSERT INTO [ACCOUNT]
-    VALUES (@username, @hashpassword, @EmployeeID); 
+    IF EXISTS (Select * FROM [ACCOUNT] WHERE [UserName] = @username)
+    BEGIN
+        RAISERROR ('Tài khoản đã tồn tại', 16, 1);
+    END
+    ELSE
+    BEGIN
+        DECLARE @NextID INT;
+        DECLARE @EmployeeID CHAR(5);
+        DECLARE @hashpassword VARCHAR(300);
+        DECLARE @roleid INT;
+        SELECT @NextID = COUNT([EmployeeID]) +1  FROM [EMPLOYEE] 
+        SET @EmployeeID = 'NV' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+        SET @roleid = (SELECT [RoleID] FROM [ROLE] WHERE [RoleName] = 'Nhân viên');
+        SET @hashpassword = dbo.HashPassword(@password);  
+        INSERT INTO [ACCOUNT]
+        VALUES (@username, @hashpassword, @roleid); 
+        INSERT INTO [EMPLOYEE]
+        VALUES (@EmployeeID, @username, @fullname, @address, @phonenumber, @position);  
+    END
 END;
 GO
 
 
----Login
-
-CREATE OR ALTER FUNCTION dbo.Login 
-(
-    @username VARCHAR(30),
-    @password VARCHAR(300)
-)
-RETURNS VARCHAR(5)
+CREATE OR ALTER PROCEDURE LOGIN 
+    @username NVARCHAR (20),
+    @password VARCHAR(100)
 AS
 BEGIN
     DECLARE @hashpassword VARCHAR(300);
-    DECLARE @employeeid VARCHAR(5);
-
     SET @hashpassword = dbo.HashPassword(@password);
-    
-    -- Check if the username and hashed password exist in the database
     IF EXISTS (SELECT 1 FROM [ACCOUNT] WHERE [ACCOUNT].UserName = @username AND [ACCOUNT].[Password] = @hashpassword)
     BEGIN
-        -- Get the employee ID
-        SET @employeeid = (SELECT EmployeeID FROM [ACCOUNT] WHERE [ACCOUNT].UserName = @username AND [ACCOUNT].[Password] = @hashpassword);
-        RETURN @employeeid;
+       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) ='Nhân viên'
+       BEGIN
+            SELECT E.EmployeeID AS ID, RL.RoleName 
+            FROM [ACCOUNT] AC
+            JOIN [ROLE] RL ON RL.RoleID = AC.RoleID
+            JOIN [EMPLOYEE] E ON E.UserName = [AC].UserName
+            WHERE AC.UserName =@username;
+       END
+       IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) ='Ứng viên'
+       BEGIN
+            SELECT C.CandidateID AS ID, RL.RoleName 
+            FROM [ACCOUNT] AC
+            JOIN [ROLE] RL ON [RL].RoleID = [AC].RoleID
+            JOIN [CANDIDATE] C ON C.UserName = [AC].UserName
+            WHERE AC.UserName =@username;
+       END
     END
-    ELSE 
+    ELSE
     BEGIN
-        -- Return '00000' if login fails
-        RETURN '00000';
-    END; 
-    RETURN '00000';
+        RAISERROR ('Tài khoản hoặc mật Khẩu không đúng', 16, 1);
+    END
 END;
 GO
 
 -- Tạo company
 CREATE OR ALTER PROCEDURE CREATE_COMPANY
     @companyname NVARCHAR(100),
-    @email
-    @phonenumber
-    @taxcode 
-    @address
-    @companyrepresentative
-    @companydescription
-
--- Lấy account dựa từ username
-CREATE OR ALTER PROCEDURE FIND_USER
-    @UserName VARCHAR(30)
+    @email VARCHAR(50),
+    @phonenumber CHAR(10),
+    @taxcode VARCHAR(10),
+    @address NVARCHAR(100),
+    @companyrepresentative NVARCHAR(50),
+    @companydescription NVARCHAR(500)
 AS
 BEGIN
-    SELECT [ACCOUNT].*, [ROLE].RoleName, [ROLE].Role_Description
-    FROM [ACCOUNT]
-    JOIN [ROLE] ON [ROLE].RoleID = [ACCOUNT].[RoleID]  
-    WHERE [ACCOUNT].[UserName] = @UserName;
+    DECLARE @NextID INT;
+    DECLARE @companyID CHAR(5);
+    SELECT @NextID = COUNT([CompanyID]) +1  FROM [COMPANY] 
+    SET @companyID = 'CO' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+    INSERT INTO [COMPANY] 
+    VALUES (@companyID, @companyname, @taxcode, @email, @phonenumber, @address, @companyrepresentative, @companydescription, N'Đã duyệt');
 END;
-go
+GO
+
+
 
 --EXEC FIND_USER 'minhquang2803';
 
