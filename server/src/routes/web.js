@@ -1,5 +1,6 @@
 import express from 'express'
 import * as homeController from '../controllers/homeControler'
+import * as companyControler from '../controllers/companyControler'
 let route = express.Router()
 
 let initWebRoutes = (app) => {
@@ -7,12 +8,9 @@ let initWebRoutes = (app) => {
   app.get('/', (req, res) => {
     res.json({ message: 'mainpage' })
   })
-
   app.post('/login', homeController.login)
-  // Thêm routing tại đây
-
   app.get('/login', homeController.login)
-
+  app.post('/createcompany', companyControler.CreateCompany)
   return app.use('/', route)
 }
 
