@@ -22,15 +22,15 @@ let Create = async (co, result) => {
   }
 }
 
-let GetInfor = async (companyID, result) =>{
-  try{
+let GetInfor = async (companyID, result) => {
+  try {
     await connectToDatabase()
     const request = con.request()
     request.input('companyid', sql.VARCHAR(5), companyID)
     const res =  await request.query('EXEC GET_COMPANY_INFOR @companyid')
     return result(null, res.recordset[0])
   }
-  catch (err){
+  catch (err) {
     return result(err, null)
   }
   finally {
@@ -38,6 +38,6 @@ let GetInfor = async (companyID, result) =>{
   }
 }
 module.exports = {
-    Create: Create,
-    GetInfor: GetInfor,
+  Create: Create,
+  GetInfor: GetInfor
 }
