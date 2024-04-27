@@ -1,10 +1,12 @@
 import login from "./login"
 import example from "./example"
+import createcompany from "./createCompany"
 
 
 const api = {
     login,
-    example
+    example,
+    createcompany
     // , điền thêm tại đây
 }
 

@@ -20,7 +20,7 @@ import api from "~/apis";
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [usrname, setusrname] = useState("");
+  const [username, setusrname] = useState("");
   const [password, setpassword] = useState("");
   const [typeNotif, settypeNotif] = useState(true);
   const [messNotif, setmessNotif] = useState("");
@@ -33,8 +33,8 @@ function Login() {
   };
 
   const submitButton = async () => {
-    console.log(usrname, password);
-    const res = await api.login(usrname, password);
+    console.log(username, password);
+    const res = await api.login(username, password);
     console.log(res);
     sethiddenNotif(false);
     settypeNotif(res.status);
@@ -81,7 +81,7 @@ function Login() {
         </Typography>
 
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-email">Username</InputLabel>
           <OutlinedInput
             id="outlined-adornment-email"
             startAdornment={
@@ -89,8 +89,8 @@ function Login() {
                 <MailOutlinedIcon />
               </InputAdornment>
             }
-            label="Email"
-            value={usrname}
+            label="Username"
+            value={username}
             onChange={(e) => {
               setusrname(e.target.value);
             }}

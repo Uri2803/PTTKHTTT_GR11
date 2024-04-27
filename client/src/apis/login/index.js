@@ -1,6 +1,6 @@
 import { url } from "~/apis/config";
 
-const login  = async (usrname, password) => {
+const login  = async (username, password) => {
   return fetch(url.REST_API + "/login", {
     method: "post",
     headers: {
@@ -8,7 +8,7 @@ const login  = async (usrname, password) => {
     },
     body: JSON.stringify(
       {
-        UserName: usrname,
+        UserName: username,
         Password: password,
       },
     ),
