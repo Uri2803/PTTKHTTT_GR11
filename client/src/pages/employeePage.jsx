@@ -1,6 +1,13 @@
 import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const EmployeePage = () => {
+  const navigate = useNavigate(); // Initialize the navigate function
+  
+  const handleButtonClick = (path) => {
+    navigate(path); // Navigate to the specified path
+  };
+
   return (
     <Box
       sx={{
@@ -30,6 +37,7 @@ const EmployeePage = () => {
               bgcolor: "#4caf50",
               color: "white",
             }}
+            onClick={() => handleButtonClick("/createCompany")} // Handle button click
           >
             Create Company
           </Button>
@@ -41,6 +49,7 @@ const EmployeePage = () => {
               bgcolor: "#2196f3",
               color: "white",
             }}
+            onClick={() => handleButtonClick("/createCV")}
           >
             Create CV
           </Button>
@@ -48,11 +57,25 @@ const EmployeePage = () => {
             variant="contained"
             sx={{
               width: "100%",
+              mb: 2,
               bgcolor: "#f44336",
               color: "white",
             }}
+            onClick={() => handleButtonClick("/createPost")}
           >
             Create Post
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              width: "100%",
+              mb: 2,
+              bgcolor: "#FFA500",
+              color: "white",
+            }}
+            onClick={() => handleButtonClick("/")}
+          >
+            Home Page
           </Button>
         </Box>      
       </Box>

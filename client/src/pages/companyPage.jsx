@@ -4,7 +4,14 @@ import {
   Typography,
   Button
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
 const CompanyPage = () => {
+  const navigate = useNavigate(); // Initialize the navigate function
+  
+  const handleButtonClick = (path) => {
+    navigate(path); // Navigate to the specified path
+  };
   return (
     <Box
       sx={{
@@ -52,8 +59,9 @@ const CompanyPage = () => {
           </Typography>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button variant="contained" sx={{ backgroundColor: "#4caf50", color: "white" }}>
-            Go back
+          <Button variant="contained" sx={{ backgroundColor: "#4caf50", color: "white" }}
+              onClick={() => handleButtonClick("/EmployeePage")}>            
+            Go back employee page
           </Button>
         </Box>
       </Box>
