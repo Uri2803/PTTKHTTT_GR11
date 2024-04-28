@@ -5,6 +5,7 @@ import CreateCV from "./pages/createCV";
 import CreateCompany from "./pages/createCompany";
 import CompanyPage from "./pages/companyPage";
 import EmployeePage from "./pages/employeePage";
+import CreatePost from "./pages/createPost";
 const publicPath = [
   {
     path: "/login",
@@ -75,6 +76,18 @@ const publicPath = [
       ],
       propsLayout: {
           title: 'Employee Page',
+          icon: <PermIdentityIcon fontSize="large"/>
+      }
+    },
+    {
+      path: "/CreatePost",
+      content: [
+        {
+          component: <CreatePost/>
+        }
+      ],
+      propsLayout: {
+          title: 'Create Post',
           icon: <PermIdentityIcon fontSize="large"/>
       }
     }

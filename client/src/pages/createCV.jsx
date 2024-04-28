@@ -8,9 +8,14 @@ import {
   Grid
 } from "@mui/material";
 import { theme } from "~/theme";
+import { useNavigate } from "react-router-dom";
 
 function CreateCV() {
+  const navigate = useNavigate(); // Initialize the navigate function
   
+  const handleButtonClick = (path) => {
+    navigate(path); // Navigate to the specified path
+  };
   return (
     <Box
       sx={{
@@ -72,9 +77,11 @@ function CreateCV() {
             sx={{
               backgroundColor: "#4caf50",
               color: "white",
+              right: 5,
             }}
+            onClick={() => handleButtonClick("/EmployeePage")}
           >
-            Go back
+            Go back Employee Page
           </Button>
         </Box>
          <Button variant="contained">Submit</Button>

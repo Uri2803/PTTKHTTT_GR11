@@ -61,7 +61,7 @@ const EmployeePage = () => {
               bgcolor: "#f44336",
               color: "white",
             }}
-            onClick={() => handleButtonClick("/createPost")}
+            onClick={() => handleButtonClick("/CreatePost")}
           >
             Create Post
           </Button>
