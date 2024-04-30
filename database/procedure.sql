@@ -142,7 +142,6 @@ GO
 
 
 --EXEC FIND_USER 'minhquang2803';
-
 --Tìm thông tin ưng svieen và nhân viên thông qua username
 CREATE OR ALTER PROCEDURE FIND_INFOR
     @UserName VARCHAR(30)
@@ -164,7 +163,33 @@ BEGIN
         WHERE [UserName] = @UserName;
     END
 END;
-go
+GO
 
 --EXEC FIND_INFOR 'minhquang2803';
+
+-- Lấy thông tin công ty 
+
+CREATE OR ALTER PROCEDURE GET_COMPANY_INFOR
+    @companyID VARCHAR(5)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyID)
+    BEGIN
+        RAISERROR ('Không tìm thấy công ty', 16, 1);
+    END
+    ELSE
+    BEGIN
+        SELECT *
+        FROM [COMPANY]
+        WHERE [CompanyID] =@companyID;
+    END
+END;
+GO
+
+--EXEC GET_COMPANY_INFOR 'CO001';
+
+
+
+
+
 

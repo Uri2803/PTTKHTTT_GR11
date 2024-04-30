@@ -45,7 +45,7 @@ CREATE TABLE [COMPANY] (
   [PhoneNumber] CHAR(10),
   [Address] NVARCHAR(100),
   [Representative] NVARCHAR(50),
-  [CompanyDicription] TEXT,
+  [CompanyDicription] NVARCHAR(300),
   [Censorship] NVARCHAR(10)
 )
 GO
