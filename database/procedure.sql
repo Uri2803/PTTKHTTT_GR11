@@ -151,13 +151,13 @@ BEGIN
     DECLARE @roleID CHAR(3);
     SELECT @roleID = [ACCOUNT].RoleID FROM [ACCOUNT] WHERE [UserName] = @UserName;
 
-    IF @roleID = 'RL1'
+    IF @roleID = '1'
     BEGIN
         SELECT *
-        FROM [STAFF]
+        FROM [EMPLOYEE]
         WHERE [UserName] = @UserName; 
     END
-    IF @roleID = 'RL2'
+    IF @roleID = '2'
     BEGIN
         SELECT *
         FROM [CANDIDATE]

@@ -89,19 +89,26 @@ CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
   [RegistFormID] VARCHAR(5) PRIMARY KEY,
   [CompanyID] VARCHAR(5),
   [PostingTime] DATE,
-  [PositionVacancies] NVARCHAR(15),
+  [AdStartDate] DATE,
+  [AdEndDate] DATE,
+  [PositionVacancies] NVARCHAR(100),
   [NumberRecruitment] INT,
-  [RequiredCandidates] TEXT
+  [RequiredCandidates] NVARCHAR(500),
+  [AdType] NVARCHAR(100)
 )
 GO
 
 CREATE TABLE [POSTING_INFORMATION] (
   [PostingID] VARCHAR(5) PRIMARY KEY,
   [RegistFormID] VARCHAR(5),
-  [JobDescription] TEXT,
-  [Welfare] TEXT,
+  [JobDescription] NVARCHAR(500),
+  [Position] NVARCHAR(100),
+  [Eperience] NVARCHAR(100), 
+  [Level] NVARCHAR(100),
   [ExpectedSalary] INT,
-  [EmployeePerform] VARCHAR(5)
+  [JobType] NVARCHAR(100),
+  [EmployeePerform] VARCHAR(5),
+  [ContractType] NVARCHAR(100)
 )
 GO
 
