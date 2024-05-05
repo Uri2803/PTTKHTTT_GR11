@@ -10,6 +10,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Image from "~/assets/tempIcon.jpg";
+import api from "~/apis";
+import React, { useState, useEffect } from 'react';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -20,12 +22,33 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function HomePage() {
+  const [postings, setPostings] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await api.getallposting(); 
+        if (data.status) {
+          console.log(data.status)
+          setPostings(data.posting);
+        } else {
+          console.error('Error fetching data');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  
   return (
     <Box
       sx={{
         width: "100%",
         minHeight: `calc(100vh - ${theme.app.HEIGHT_HEADER})`,
       }}
+      
     >
       <Typography
         sx={{
@@ -40,7 +63,7 @@ function HomePage() {
       </Typography>
 
       <Grid container spacing={2} sx={{ width: "100%" }}>
-        {["", "", "", "", "","", "", "", "", "","", "", "", "", "","", "", "", "", "","", "", "", "", ""].map((container, index) => {
+        {postings.map((container, index) => {
           return (
             <Grid xs={4} key={index}>
               <Item
