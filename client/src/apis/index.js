@@ -11,5 +11,4 @@ const api = {
     getallposting
     // , điền thêm tại đây
 }
-
 export default api

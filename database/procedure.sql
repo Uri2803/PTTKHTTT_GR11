@@ -191,13 +191,13 @@ GO
 CREATE OR ALTER PROCEDURE GET_ALL_POSTING
 AS
 BEGIN
-    SELECT PI.*, CO.CompanyID, CO.Name, CO.Address
+    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Eperience, PI.JobType, CO.Name, CO.Address
     FROM [POSTING_INFORMATION] PI 
     JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
     JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID;
 END;
 
-EXEC GET_ALL_POSTING;
+EXEC GET_ALL_POSTING ;
 
 
 

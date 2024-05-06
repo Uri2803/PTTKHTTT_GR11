@@ -1,14 +1,12 @@
 import { url } from "~/apis/config";
 
-const getAllPosting  = async (username, password) => {
+const getallposting  = async () => {
   return fetch(url.REST_API + "/getallposting", {
     method: "get",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      {
-      },
+    body: JSON.stringify(  
     ),
   })
     .then((response) => {
@@ -19,4 +17,4 @@ const getAllPosting  = async (username, password) => {
     });
 };
 
-export default getAllPosting;
+export default getallposting ;

@@ -30,19 +30,17 @@ let login = (req, res) => {
 
 let getAllPosting = (req, res) =>{
     home.getAllPosting((err, posting)=>{
+      console.log('api')
       if(err){
-        res.json({
-          status: false,
-          posting: false,
+        res.json({status: false, posting: false,
         })
       }
       else{
-        res.json({
-          status:true,
-          posting: posting})
+
+        res.json({status:true, posting: posting})
+
       }
     })
-  
 }
 
 module.exports = {

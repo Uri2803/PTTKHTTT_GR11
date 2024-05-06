@@ -29,7 +29,7 @@ function HomePage() {
       try {
         const data = await api.getallposting(); 
         if (data.status) {
-          console.log(data.status)
+          console.log(data)
           setPostings(data.posting);
         } else {
           console.error('Error fetching data');
@@ -41,7 +41,10 @@ function HomePage() {
 
     fetchData();
   }, []);
-  
+  const formatNumber = (number) => {
+    // Định dạng số với ba số mỗi lần
+    return number.toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  }
   return (
     <Box
       sx={{
@@ -63,13 +66,13 @@ function HomePage() {
       </Typography>
 
       <Grid container spacing={2} sx={{ width: "100%" }}>
-        {postings.map((container, index) => {
+        {postings.map((post, index) => {
           return (
             <Grid xs={4} key={index}>
               <Item
                 sx={{
                   width: "100%",
-                  minHeight: "150px",
+                  minHeight: "200px",
                   height: "100%",
                   borderRadius: "40px",
                   padding: "20px",
@@ -102,14 +105,14 @@ function HomePage() {
                   <Box sx={{ display: "flex", flexDirection: "column" }}>
                     <CardContent sx={{ flex: "1 0 auto", py: 0 }}>
                       <Typography component="div" variant="h5">
-                        Live From Space
+                        {post.Position}
                       </Typography>
                       <Typography
                         variant="subtitle1"
                         color="text.secondary"
                         component="div"
                       >
-                        Mac Miller
+                        {post.Name}
                       </Typography>
                     </CardContent>
                   </Box>
@@ -120,7 +123,7 @@ function HomePage() {
                     display: "flex",
                   }}
                 >
-                  {["UI Designer", "figma", "Landing Page"].map(
+                  {[post.Eperience, formatNumber(post.ExpectedSalary) + '$', post.Level, post.JobType].map(
                     (title, index) => {
                       return (
                         <Button 
@@ -132,11 +135,11 @@ function HomePage() {
                           }}
                           sx={{
                             borderRadius: "20px",
-                            padding: "5px 10px",
+                            padding: "10px 15px",
                             mr: 1,
                             bgcolor: "#fff",
                             color: theme.color.main,
-                            fontSize: "12px",
+                            fontSize: "11px",
                             boxShadow:
                               "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
                             "&:hover": {
