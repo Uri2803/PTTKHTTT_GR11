@@ -18,6 +18,7 @@ END;
 GO
 
 
+
 -----//////-------
 
 -- Add thông tin nhân viên và tạo tài khoản cho nhân viên
@@ -170,18 +171,20 @@ GO
 -- Lấy thông tin công ty 
 
 CREATE OR ALTER PROCEDURE GET_COMPANY_INFOR
-    @companyID VARCHAR(5)
+    @postingid VARCHAR(5)
 AS
 BEGIN
-    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyID)
+    IF NOT EXISTS (SELECT * FROM [POSTING_INFORMATION] WHERE [PostingID] = @postingid)
     BEGIN
         RAISERROR ('Không tìm thấy công ty', 16, 1);
     END
     ELSE
     BEGIN
-        SELECT *
-        FROM [COMPANY]
-        WHERE [CompanyID] =@companyID;
+        SELECT CO.*
+        FROM [COMPANY] CO
+        JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON RRF.CompanyID = CO.CompanyID
+        JOIN [POSTING_INFORMATION] PI ON PI.RegistFormID = RRF.RegistFormID  
+        WHERE PI.PostingID = @postingid;
     END
 END;
 GO
@@ -196,10 +199,18 @@ BEGIN
     JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
     JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID;
 END;
+GO
 
-EXEC GET_ALL_POSTING ;
+--EXEC GET_ALL_POSTING ;
 
-
-
-
-
+CREATE OR ALTER PROCEDURE GET_JOB_DETAIL
+    @postingid VARCHAR(5)
+AS
+BEGIN
+    SELECT PI.PostingID, PI.[Position], PI.[Level], PI.JobType, PI.ExpectedSalary, PI.JobDescription, PI.Eperience, PI.ContractType
+    FROM [POSTING_INFORMATION] PI
+    WHERE pi.PostingID = @postingid;
+END;
+GO
+EXEC GET_JOB_DETAIL 'PI001';
+GO

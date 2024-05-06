@@ -12,6 +12,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Image from "~/assets/tempIcon.jpg";
 import api from "~/apis";
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -69,6 +70,7 @@ function HomePage() {
         {postings.map((post, index) => {
           return (
             <Grid xs={4} key={index}>
+              <Link to={`/jobdetail/${post.PostingID}`} style={{ textDecoration: 'none' }}>
               <Item
                 sx={{
                   width: "100%",
@@ -80,6 +82,7 @@ function HomePage() {
                     cursor: "pointer",
                   }
                 }}
+                
               >
                 <Card
                   sx={{
@@ -154,9 +157,11 @@ function HomePage() {
                   )}
                 </Box>
               </Item>
+              </Link>
             </Grid>
           );
         })}
+        
       </Grid>
     </Box>
   );

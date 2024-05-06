@@ -23,12 +23,12 @@ let Create = async (co, result) => {
   }
 }
 
-let GetInfor = async (companyID, result) => {
+let GetInfor = async (PostingID, result) => {
   try {
     await connectToDatabase()
     const request = con.request()
-    request.input('companyid', sql.VARCHAR(5), companyID)
-    const res =  await request.query('EXEC GET_COMPANY_INFOR @companyid')
+    request.input('PostingID', sql.VARCHAR(5), PostingID)
+    const res =  await request.query('EXEC GET_COMPANY_INFOR @PostingID')
     return result(null, res.recordset[0])
   }
   catch (err) {

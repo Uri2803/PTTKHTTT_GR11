@@ -102,7 +102,7 @@ const publicPath = [
     }
   },
   {
-    path: "/jobdetail",
+    path: "/jobdetail/:id",
     content: [
       {
         component: <JobDetail />,
