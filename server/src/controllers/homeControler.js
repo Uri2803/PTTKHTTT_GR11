@@ -8,27 +8,20 @@ import co from '../models/company'
 let login = (req, res) => {
   const { UserName, Password } = req.body
   if (UserName && Password) {
-    const account = { UserName, Password }
-    ac.Login(account, (err, employeeID) => {
-      if (err) {
-        res.json({
-          status: false,
-          message: 'Username hoặc Password không chính xác'
-        })
-      } else if (employeeID == '00000') {
-        res.json({
-          status: false,
-          message: 'Username hoặc Password không chính xác'
-        })
-      } else {
-        res.json({ status: true, employeeID: employeeID })
+    const account = {UserName, Password}
+    ac.Login(account, (err, infor)=>{
+      if(err){
+        res.json({status: false, message: 'Username hoặc Password không chính xác'})
+      }
+      else{
+          res.json({status: true, ID:infor.ID,  Role: infor.RoleName})
       }
     })
-  } else {
+  }
+  else {
     res.json({ status: false, message: 'Vui lòng nhập UserName VÀ Password' })
   }
 }
-
 let getAllPosting = (req, res) =>{
     home.getAllPosting((err, posting)=>{
       
