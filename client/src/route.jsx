@@ -10,6 +10,7 @@ import CreateCompany from "./pages/createCompany";
 // import JobDetail from "./pages/detailJob";
 import JobDetail from "./pages/jobDetail";
 import Company from "./pages/createACompany";
+import EmployeePage from "./pages/employeePage";
 // import Layout from "./layout";
 
 const publicPath = [
@@ -124,6 +125,18 @@ const publicPath = [
       title: "Create a Company",
       icon: <PermIdentityIcon fontSize="large" />,
     },
+  },
+  {
+    path: "/employeePage",
+    content: [
+      {
+        component: <EmployeePage/>
+      }
+    ],
+    propsLayout: {
+        title: 'Employee Page',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
   },
 
 ];
