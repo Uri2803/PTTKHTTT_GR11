@@ -1,6 +1,7 @@
 import express from 'express'
 import * as homeController from '../controllers/homeControler'
 import * as companyControler from '../controllers/companyControler'
+import * as middlewares from '../controllers/middlewares';
 let route = express.Router()
 
 let initWebRoutes = (app) => {
@@ -10,7 +11,7 @@ let initWebRoutes = (app) => {
   })
   app.post('/login', homeController.login)
   app.get('/login', homeController.login)
-  app.post('/createcompany', companyControler.CreateCompany)
+  app.post('/createcompany', middlewares.isEmployee, companyControler.CreateCompany)
   app.get('/getcompanyinfor', companyControler.GetCompanyInfor)
   app.get('/getallposting', homeController.getAllPosting)
   app.get('/getjobdetail', homeController.getJobDetail)

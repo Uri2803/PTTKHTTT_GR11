@@ -120,6 +120,7 @@ BEGIN
 END;
 GO
 
+
 -- Tạo company
 CREATE OR ALTER PROCEDURE CREATE_COMPANY
     @companyname NVARCHAR(100),

@@ -5,15 +5,21 @@ import ac from '../models/account'
 import home from '../models/home'
 import co from '../models/company'
 
+
+
 let login = (req, res) => {
   const { UserName, Password } = req.body
   if (UserName && Password) {
     const account = {UserName, Password}
     ac.Login(account, (err, infor)=>{
       if(err){
+        console.log(err)
         res.json({status: false, message: 'Username hoặc Password không chính xác'})
       }
       else{
+          req.session.loggein = true;
+          res.session.ID = infor.ID;
+          req.session.Role = infor.RoleName;
           res.json({status: true, ID:infor.ID,  Role: infor.RoleName})
       }
     })
@@ -22,6 +28,7 @@ let login = (req, res) => {
     res.json({ status: false, message: 'Vui lòng nhập UserName VÀ Password' })
   }
 }
+
 let getAllPosting = (req, res) =>{
     home.getAllPosting((err, posting)=>{
       
@@ -60,5 +67,5 @@ let getJobDetail = (req, res) => {
 module.exports = {
   login: login,
   getAllPosting: getAllPosting,
-  getJobDetail: getJobDetail
+  getJobDetail: getJobDetail,
 }

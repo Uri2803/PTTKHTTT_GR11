@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
 app.use(session({
   secret: 'mySecretKey',
   resave: false,
-  saveUninitialized: false
-}))
+  saveUninitialized: false,
+}));
 
 initWebRoutes(app)
 let port = process.env.PORT || 6969
