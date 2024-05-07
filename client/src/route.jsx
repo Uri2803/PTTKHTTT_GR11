@@ -103,7 +103,7 @@ const publicPath = [
     }
   },
   {
-    path: "/jobdetail/:id",
+    path: "/jobdetail/:user",
     content: [
       {
         component: <JobDetail />,
@@ -127,7 +127,7 @@ const publicPath = [
     },
   },
   {
-    path: "/employeePage",
+    path: "/employeePage/:user",
     content: [
       {
         component: <EmployeePage/>

@@ -2,6 +2,7 @@ import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const EmployeePage = () => {
+
   const navigate = useNavigate(); // Initialize the navigate function
   
   const handleButtonClick = (path) => {
@@ -39,6 +40,7 @@ const EmployeePage = () => {
             }}
             onClick={() => handleButtonClick("/createCompany")} // Handle button click
           >
+
             Create Company
           </Button>
           <Button

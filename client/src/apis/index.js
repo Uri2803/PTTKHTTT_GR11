@@ -3,14 +3,15 @@ import example from "./example"
 import createcompany from "./createCompany"
 import getallposting from "./getAllPosting"
 import getjobdetail from "./getJobDetail"
-
+import loadLogin from "./loadLogin"
 
 const api = {
     login,
     example,
     createcompany,
     getallposting,
-    getjobdetail
+    getjobdetail,
+    loadLogin
     // , điền thêm tại đây
 }
 export default api

@@ -20,7 +20,6 @@ let Login = async (account, result) => {
   }
 }
 
-
 module.exports = {
   Login:Login
 }

@@ -3,9 +3,9 @@ import { Box, Container, Typography } from "@mui/material";
 import { theme } from "~/theme";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import { Link } from "react-router-dom";
-
+import { useParams } from "react-router-dom";
 function DefaultLayout({ props, children }) {
-
+  const {user} = useParams();
   return (
     <>
       {console.log("layout", props)}
@@ -59,18 +59,9 @@ function DefaultLayout({ props, children }) {
                 alignItems: "center",
               }}
             >
-              {props?.isLogin ? (
-                props?.icon ? (
-                  <>
-                    {props.icon}
-                    <Typography variant="body1">Mạch Vĩ Kiệt</Typography>
-                  </>
+              {user ? (
+                    <Typography variant="body1">{user}</Typography>
                 ) : (
-                  <>
-                    <CheckBoxOutlineBlankOutlinedIcon />
-                  </>
-                )
-              ) : (
                 <Link to="/login">Vui lòng đăng nhập</Link>
               )}
             </Box>

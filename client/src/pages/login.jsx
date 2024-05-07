@@ -42,7 +42,7 @@ function Login() {
     setmessNotif(res?.message);
     if(res.status){
       if(res.Role === 'Nhân viên'){
-        navigate('/employeePage');
+        navigate(`/employeePage/${res.UserName}`);
       }
       if(res.Role === 'Ứng viên'){
         navigate('/');
