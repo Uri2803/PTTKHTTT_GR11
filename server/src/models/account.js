@@ -12,6 +12,7 @@ let Login = async (account, result) => {
     return result(null, res.recordset[0]); 
   }
   catch (err) {
+    console.log('er', err)
     return result(err, null)
   }
   finally {

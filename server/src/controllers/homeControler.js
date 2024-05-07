@@ -13,12 +13,11 @@ let login = (req, res) => {
     const account = {UserName, Password}
     ac.Login(account, (err, infor)=>{
       if(err){
-        console.log(err)
         res.json({status: false, message: 'Username hoặc Password không chính xác'})
       }
       else{
           req.session.loggein = true;
-          res.session.ID = infor.ID;
+          req.session.userID=infor.ID;
           req.session.Role = infor.RoleName;
           res.json({status: true, ID:infor.ID,  Role: infor.RoleName})
       }

@@ -14,8 +14,8 @@ import { theme } from "~/theme";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import HttpsIcon from "@mui/icons-material/Https";
 import { Link } from "react-router-dom";
-
 import api from "~/apis";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,6 +31,7 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const navigate = useNavigate(); 
 
   const submitButton = async () => {
     console.log(username, password);
@@ -39,6 +40,17 @@ function Login() {
     sethiddenNotif(false);
     settypeNotif(res.status);
     setmessNotif(res?.message);
+    if(res.status){
+      if(res.Role === 'Nhân viên'){
+        navigate('/employeePage');
+      }
+      if(res.Role === 'Ứng viên'){
+        navigate('/');
+      }
+
+    }
+    
+
   };
 
   return (

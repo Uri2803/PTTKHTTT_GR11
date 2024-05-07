@@ -120,6 +120,10 @@ BEGIN
 END;
 GO
 
+EXEC LOGIN 'xlocnguyen', 'nxl1212003';
+GO
+
+
 
 -- Tạo company
 CREATE OR ALTER PROCEDURE CREATE_COMPANY
