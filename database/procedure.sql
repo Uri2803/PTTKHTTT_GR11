@@ -98,7 +98,7 @@ BEGIN
     BEGIN
        IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Nhân viên'
        BEGIN
-            SELECT E.EmployeeID AS ID, RL.RoleName 
+            SELECT AC.UserName, E.EmployeeID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC
             JOIN [ROLE] RL ON RL.RoleID = AC.RoleID
             JOIN [EMPLOYEE] E ON E.UserName = [AC].UserName
@@ -106,7 +106,7 @@ BEGIN
        END
        IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Ứng viên'
        BEGIN
-            SELECT C.CandidateID AS ID, RL.RoleName 
+            SELECT AC.UserName, C.CandidateID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC
             JOIN [ROLE] RL ON [RL].RoleID = [AC].RoleID
             JOIN [CANDIDATE] C ON C.UserName = [AC].UserName
@@ -158,20 +158,20 @@ BEGIN
 
     IF @roleID = '1'
     BEGIN
-        SELECT *
+        SELECT *, (SELECT RoleName FROM [ROLE] WHERE RoleID = '1') AS Role
         FROM [EMPLOYEE]
         WHERE [UserName] = @UserName; 
     END
     IF @roleID = '2'
     BEGIN
-        SELECT *
+        SELECT *, (SELECT RoleName FROM [ROLE] WHERE RoleID = '2') AS Role
         FROM [CANDIDATE]
         WHERE [UserName] = @UserName;
     END
 END;
 GO
 
---EXEC FIND_INFOR 'minhquang2803';
+EXEC FIND_INFOR 'minhquang2803';
 
 -- Lấy thông tin công ty 
 
