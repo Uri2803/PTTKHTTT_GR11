@@ -8,12 +8,11 @@ let Create = async (cd, result) => {
     request.input('fullname', sql.NVARCHAR(100), cd.fullname)
     request.input('birthday', sql.DATE, cd.birthday)
     request.input('phonenumber', sql.CHAR(10), cd.phonenumber)
-    request.input('address', sql.NVARCHAR(100), cd.address)
     request.input('email', sql.VARCHAR(50), cd.email)
     request.input('username', sql.VARCHAR(30), cd.username)
     request.input('password', sql.VARCHAR(300), cd.password)
     
-    const res = await request.query('EXEC ADD_CANDIDATE @fullname, @birthday, @phonenumber, @address, @email, @username, @password')
+    const res = await request.query('EXEC ADD_CANDIDATE @fullname, @birthday, @phonenumber, @email, @username, @password')
     return result(null, 'Đăng ký thành công') 
   }
   catch (err) {

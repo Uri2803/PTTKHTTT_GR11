@@ -19,31 +19,42 @@ import DateRangeIcon from '@mui/icons-material/DateRange';
 
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-
-
+import api from "~/apis";
+import { useNavigate } from "react-router-dom";
 function RegisterCandidate() {
-
-
+  const navigate = useNavigate(); 
   const [showPassword, setShowPassword] = useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const [candidate, setcandidate] = useState({
+  const [hiddenNotif, sethiddenNotif] = useState(true);
+  const [typeNotif, settypeNotif] = useState(false);
+  const [messNotif, setmessNotif] = useState('');
+  const [candidate, setCandidate] = useState({
     fullname: '',
     username: '',
     birthday: '',
-    phonenumer: '',
+    phonenumber: '',
     email: '',
     password: ''
   })
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setCompanyData({ ...candidate, [name]: value });
+    setCandidate({ ...candidate, [name]: value });
   };
-
+  const submitButton = async () => {
+    console.log('cd' ,candidate); 
+    const res = await api.createCandidate(candidate);
+    console.log(res);
+    sethiddenNotif(false);
+    settypeNotif(res.status);
+    setmessNotif(res?.message);
+  }
+  if(typeNotif ){
+    navigate('/login');
+  }
 
   return (
     <Box
@@ -85,7 +96,7 @@ function RegisterCandidate() {
           />
         </FormControl>
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-User Name">User Name</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-username">Username</InputLabel>
           <OutlinedInput
             id="outlined-adornment-username"
             startAdornment={
@@ -109,7 +120,7 @@ function RegisterCandidate() {
                 <DateRangeIcon />
               </InputAdornment>
             }
-            label="birth"
+            label="birthday"
             name="birthday"
             onChange={handleInputChange}
           />
@@ -123,7 +134,9 @@ function RegisterCandidate() {
                 <LocalPhoneIcon />
               </InputAdornment>
             }
-            label="phone"
+            label="phonenumber"
+            name="phonenumber"
+            onChange={handleInputChange}
           />
         </FormControl>
 
@@ -138,7 +151,9 @@ function RegisterCandidate() {
                 <MailOutlinedIcon />
               </InputAdornment>
             }
-            label="Email"
+            label="email"
+            name="email"
+            onChange={handleInputChange}
           />
         </FormControl>
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
@@ -159,7 +174,9 @@ function RegisterCandidate() {
                 </IconButton>
               </InputAdornment>
             }
-            label="Password"
+            label="password"
+            name="password"
+            onChange={handleInputChange}
           />
         </FormControl>
 
@@ -178,9 +195,25 @@ function RegisterCandidate() {
             alignItems: "center",
             pt: "10px",
           }}
+          onClick={submitButton}
         >
-          <ButtonUsage>Submit</ButtonUsage>
+          
+          <ButtonUsage >Submit</ButtonUsage>
         </Box>
+        <Box>
+        <Typography
+          color={typeNotif ? "#4caf50" : "error"}
+          sx={{
+            display: hiddenNotif ? "none" : "block",
+            pt: "10px",
+          }}
+        >
+          {typeNotif ?( 
+            "Success"
+          ) : messNotif}
+        </Typography>
+        </Box>
+
       </Box>
     </Box>
   );

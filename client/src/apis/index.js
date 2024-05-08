@@ -4,6 +4,7 @@ import createcompany from "./createCompany"
 import getallposting from "./getAllPosting"
 import getjobdetail from "./getJobDetail"
 import loadLogin from "./loadLogin"
+import createCandidate from "./createCandidate"
 
 const api = {
     login,
@@ -11,7 +12,8 @@ const api = {
     createcompany,
     getallposting,
     getjobdetail,
-    loadLogin
+    loadLogin,
+    createCandidate
     // , điền thêm tại đây
 }
 export default api

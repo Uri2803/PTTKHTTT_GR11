@@ -56,7 +56,6 @@ CREATE TABLE [CANDIDATE] (
   [FullName] NVARCHAR(50),
   [Birthday] DATE,
   [PhoneNumber] CHAR(10),
-  [Address] NVARCHAR(100),
   [Email] VARCHAR(50)
 )
 GO
