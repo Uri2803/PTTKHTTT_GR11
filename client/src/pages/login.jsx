@@ -11,11 +11,12 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { theme } from "~/theme";
-import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
+
 import HttpsIcon from "@mui/icons-material/Https";
 import { Link } from "react-router-dom";
 import api from "~/apis";
 import { useNavigate } from "react-router-dom";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -41,8 +42,9 @@ function Login() {
     settypeNotif(res.status);
     setmessNotif(res?.message);
     if(res.status){
+      localStorage.setItem('user', JSON.stringify(res));
       if(res.Role === 'Nhân viên'){
-        navigate(`/employeePage/${res.UserName}`);
+        navigate(`/employeePage`);
       }
       if(res.Role === 'Ứng viên'){
         navigate('/');
@@ -98,7 +100,7 @@ function Login() {
             id="outlined-adornment-email"
             startAdornment={
               <InputAdornment position="start">
-                <MailOutlinedIcon />
+                <PersonOutlineIcon/>
               </InputAdornment>
             }
             label="Username"

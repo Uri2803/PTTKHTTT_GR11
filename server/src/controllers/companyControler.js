@@ -6,7 +6,6 @@ import company from "../models/company"
 let CreateCompany = (req, res) =>{
     const {CompanyName, Email, PhoneNumber, TaxCode, Address, CompanyRepresentative, CompanyDescription} = req.body;
     const co = {CompanyName, Email, PhoneNumber, TaxCode, Address, CompanyRepresentative, CompanyDescription}
-    console.log(req.body)
     if(CompanyName &&Email && PhoneNumber && TaxCode && Address && CompanyRepresentative && CompanyDescription)
     company.Create(co, (err, message)=>{
         if(err){

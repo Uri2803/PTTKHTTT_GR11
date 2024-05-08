@@ -35,8 +35,9 @@ GO
 ------
 
 
-EXEC ADD_CANDIDATE  N'Phạm Thị Hồng', '1993-09-20', '0367890123', N'Hải Phòng', 'phamhong', 'hong123';
+EXEC ADD_CANDIDATE  N'Phạm Thị Hồng', '1993-09-20', '0367890123', N'Hải Phòng', 'hmq@gmail.com' ,'phamhong', 'hong123';
 GO
+
 
 ---
 INSERT INTO COMPANY (CompanyID, Name, TaxCode, Email, PhoneNumber, Address, Representative, CompanyDicription, Censorship) 

@@ -8,7 +8,8 @@ import React, { useState, useEffect } from 'react';
 import api from "~/apis";
 
 const JobDetail = () => {
-  const { id} = useParams();
+  const {id} = useParams();
+  console.log('id: ',id)
   const [jobDetail, setJobDetail] = useState(null); 
   const formatNumber = (number) => {
     // Định dạng số với ba số mỗi lần

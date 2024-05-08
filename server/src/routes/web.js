@@ -2,6 +2,7 @@ import express from 'express'
 import * as homeController from '../controllers/homeControler'
 import * as companyControler from '../controllers/companyControler'
 import * as middlewares from '../controllers/middlewares';
+import * as candidateControler from '../controllers/candidateControler'
 let route = express.Router()
 
 let initWebRoutes = (app) => {
@@ -15,7 +16,8 @@ let initWebRoutes = (app) => {
   app.get('/getcompanyinfor', companyControler.GetCompanyInfor)
   app.get('/getallposting', homeController.getAllPosting)
   app.get('/getjobdetail', homeController.getJobDetail)
-  app.get('/loadlogin', homeController.loadLogin);
+  app.get('/loadlogin', homeController.loadLogin)
+  app.post('/createcandidate', candidateControler.createCandidate)
   return app.use('/', route)
 }
 

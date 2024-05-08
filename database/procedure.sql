@@ -59,6 +59,7 @@ CREATE OR ALTER PROCEDURE ADD_CANDIDATE
     @birthday DATE,
     @phonenumber CHAR(10),
     @address NVARCHAR(50),
+    @email VARCHAR(50),
     @username VARCHAR(30),
     @password VARCHAR(300)
 AS
@@ -79,13 +80,15 @@ BEGIN
         SET @hashpassword = dbo.HashPassword(@password);  
         INSERT INTO [ACCOUNT]
         VALUES (@username, @hashpassword, @roleid); 
+        
         INSERT INTO [CANDIDATE]
-        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @address);  
+        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @address, @email);  
     END
 END;
 GO
 
-
+EXEC ADD_CANDIDATE 'Huỳnh Minh Quang', '2003-03-28', '0382333045', 'quận 7', 'huynhminhquang@gmail.com', 'hmq', '123'
+Go
 
 CREATE OR ALTER PROCEDURE LOGIN 
     @username NVARCHAR (20),

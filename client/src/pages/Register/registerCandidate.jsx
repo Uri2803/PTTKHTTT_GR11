@@ -17,7 +17,13 @@ import ButtonUsage from "~/components/ButtonUsage";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+
+
 function RegisterCandidate() {
+
+
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -25,6 +31,19 @@ function RegisterCandidate() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const [candidate, setcandidate] = useState({
+    fullname: '',
+    username: '',
+    birthday: '',
+    phonenumer: '',
+    email: '',
+    password: ''
+  })
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCompanyData({ ...candidate, [name]: value });
+  };
+
 
   return (
     <Box
@@ -61,8 +80,25 @@ function RegisterCandidate() {
               </InputAdornment>
             }
             label="fullname"
+            name="fullname"
+            onChange={handleInputChange}
           />
         </FormControl>
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-User Name">User Name</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-username"
+            startAdornment={
+              <InputAdornment position="start">
+                <PersonOutlineIcon  />
+              </InputAdornment>
+            }
+            label="username"
+            name="username"
+            onChange={handleInputChange}
+          />
+        </FormControl>
+
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-birth">Birth</InputLabel>
           <OutlinedInput
@@ -74,8 +110,25 @@ function RegisterCandidate() {
               </InputAdornment>
             }
             label="birth"
+            name="birthday"
+            onChange={handleInputChange}
           />
         </FormControl>
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-phone">Phone</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-phone"
+            startAdornment={
+              <InputAdornment position="start">
+                <LocalPhoneIcon />
+              </InputAdornment>
+            }
+            label="phone"
+          />
+        </FormControl>
+
+
+
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
           <OutlinedInput
