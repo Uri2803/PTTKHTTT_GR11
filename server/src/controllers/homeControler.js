@@ -59,25 +59,11 @@ let getJobDetail = (req, res) => {
   })
 }
 
-let loadLogin = (req, res) =>{
-  console.log(req.session.loggein)
-  if(req.session.loggein){
-    const user = {
-        UserID: req.session.userID,
-        UserName: req.session.UserName,
-        Role: req.session.Role
-    }
-    req.json({status: true, user: user})
-  }
-  else{
-    res.json({status: false, user: null})
-  }  
 
-}
 
 module.exports = {
   login: login,
   getAllPosting: getAllPosting,
   getJobDetail: getJobDetail,
-  loadLogin: loadLogin
+
 }

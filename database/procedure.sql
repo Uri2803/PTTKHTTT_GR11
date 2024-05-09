@@ -58,7 +58,6 @@ CREATE OR ALTER PROCEDURE ADD_CANDIDATE
     @fullname NVARCHAR(50),
     @birthday DATE,
     @phonenumber CHAR(10),
-    @address NVARCHAR(50),
     @email VARCHAR(50),
     @username VARCHAR(30),
     @password VARCHAR(300)
@@ -82,7 +81,7 @@ BEGIN
         VALUES (@username, @hashpassword, @roleid); 
         
         INSERT INTO [CANDIDATE]
-        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @address, @email);  
+        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @email);  
     END
 END;
 GO
@@ -174,9 +173,10 @@ BEGIN
 END;
 GO
 
-EXEC FIND_INFOR 'minhquang2803';
+EXEC FIND_INFOR 'phamhong';
 
 -- Lấy thông tin công ty 
+GO
 
 CREATE OR ALTER PROCEDURE GET_COMPANY_INFOR
     @postingid VARCHAR(5)
@@ -222,3 +222,42 @@ END;
 GO
 EXEC GET_JOB_DETAIL 'PI001';
 GO
+
+
+CREATE OR ALTER PROCEDURE CREATE_CV 
+    @candidateid VARCHAR(5),
+    @postingid VARCHAR(5),
+    @experience NVARCHAR(30),
+    @level NVARCHAR(50),
+    @skill NVARCHAR(100),
+    @aboutyourself NVARCHAR(300)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [CANDIDATE] WHERE [CandidateID] = @candidateid)
+    BEGIN
+        RAISERROR ('Lỗi CandidateID', 16, 1);
+        RETURN; 
+    END
+    IF NOT EXISTS (SELECT * FROM [POSTING_INFORMATION] WHERE [PostingID] = @postingid)
+    BEGIN
+       RETURN RAISERROR ('Lỗi postingID', 16, 1);
+       RETURN; 
+    END
+    
+    DECLARE @NextID INT;
+    DECLARE @applicationID CHAR(5);
+    DECLARE @registfromID CHAR(5);
+
+    SELECT @NextID = COUNT([ApplicationID]) +1  FROM [APPLICATION] 
+    SET @applicationID = 'AP' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+    
+    SELECT @NextID = COUNT([RegistFormID]) +1  FROM [APPLICATION_REGISTRATION_FORM] 
+    SET @registfromID = 'AR' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+
+    INSERT INTO [APPLICATION_REGISTRATION_FORM]
+    VALUES (@registfromID, @postingid, GETDATE(), @experience, @level, @skill, @aboutyourself);
+
+    INSERT INTO [APPLICATION]
+    VALUES (@applicationID, @candidateid, @registfromID, null, null);
+END;
+

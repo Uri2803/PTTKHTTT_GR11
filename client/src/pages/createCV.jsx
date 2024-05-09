@@ -8,9 +8,68 @@ import {
   Grid
 } from "@mui/material";
 import { theme } from "~/theme";
+import { useParams, useNavigate } from "react-router-dom";
+import React, { useState,  useEffect } from 'react';
+import api from "~/apis";
+import { useLocation } from "react-router-dom";
+
+
 
 function CreateCV() {
-  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const postingID = queryParams.get("postingID");
+  const dataUser = localStorage.getItem('user')
+  const user = JSON.parse(dataUser);
+  const userName=user.UserName;
+  const [userInfor, setUserInfor] = useState(null); 
+  console.log(user.UserName)
+
+  useEffect(() => {    
+    console.log('test')
+    const fetchData = async () => {
+      try {
+        const data = await api.findInfor(userName);
+        if (data.status) {
+          console.log('data', data)
+          setUserInfor(data.userInfor);
+        } else {
+          console.error('Error fetching data');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [userName]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCV({ ...CV, [name]: value });
+  };
+  const [CV, setCV] = useState({
+    experience: '',
+    level: '',
+    skill: '',
+    aboutyourself: '',
+    postingid: postingID,
+    candidateid: user.ID
+    
+  });
+
+
+  const [hiddenNotif, sethiddenNotif] = useState(true);
+  const [typeNotif, settypeNotif] = useState(false);
+  const [messNotif, setmessNotif] = useState('');
+  const submitButton = async () =>{
+    const res = await api.createcv(CV);
+    sethiddenNotif(false);
+    settypeNotif(res.status);
+    setmessNotif(res?.message);
+  }
+
+
   return (
     <Box
       sx={{
@@ -35,16 +94,92 @@ function CreateCV() {
           Create a CV
         </Typography>
 
-       <Grid container spacing={2}>
+   
+        {/* <Grid container spacing={2}>
          {["Full name", "Email", "Phone number", 
-           "Years of experience", 
-           "Level", 
-           "Skills", 
+           
            ].map((label, index) => (
              <Grid item xs={4} key={index}>
                <FormControl sx={{ width:"100%" }} variant="outlined">
                  <InputLabel htmlFor={`outlined-adornment-${label.toLowerCase().replace(/ /g, '-')}`}>{label}</InputLabel>
-                 <OutlinedInput id={`outlined-adornment-${label.toLowerCase().replace(/ /g, '-')}`} label={label}/>
+                 <OutlinedInput 
+                 name={label.toLowerCase().replace(/ /g, '-')}
+                 label={label}
+                 id={`outlined-adornment-${label.toLowerCase().replace(/ /g, '-')}`}
+                 value={CV[label.toLowerCase().replace(/ /g, '-')] || ''}
+                 onChange={handleInputChange}
+                 />
+               </FormControl>
+             </Grid>
+         ))}
+       </Grid> */}
+
+       <Grid container spacing={2}  sx={{ marginBottom: "20px" }} >
+          <Grid  item xs={4}> 
+            <FormControl  sx={{ width:"100%" }} variant="outlined">
+              <InputLabel htmlFor="Full name">Full name</InputLabel>
+              <OutlinedInput 
+                label="Full name"
+                name="Full name"
+                id="outlined-adornment-about-yourself"
+                value={userInfor ? userInfor.FullName : ''}
+                readOnly
+              
+            />
+            </FormControl>
+          </Grid>
+
+          <Grid  item xs={4}> 
+            <FormControl  sx={{ width:"100%" }} variant="outlined">
+              <InputLabel htmlFor="Email"> Email</InputLabel>
+              <OutlinedInput 
+                label="Email"
+                name="Email"
+                id="Email"
+                value={userInfor ? userInfor.Email : ''}
+                readOnly
+             
+            />
+            </FormControl>
+          </Grid>
+
+          <Grid  item xs={4}> 
+            <FormControl  sx={{ width:"100%" }} variant="outlined">
+              <InputLabel htmlFor="Phone number">Phone number</InputLabel>
+              <OutlinedInput 
+                label="Phone number"
+                name="Phone number"
+                id="Phone number"
+                value={userInfor ? userInfor.PhoneNumber : ''}
+                readOnly
+            />
+            </FormControl>
+          </Grid>
+          
+       </Grid>
+
+
+
+        
+        
+        
+
+       <Grid container spacing={2}  >
+         {[
+           "experience", 
+           "Level", 
+           "Skill", 
+           ].map((label, index) => (
+             <Grid item xs={4} key={index}>
+               <FormControl sx={{ width:"100%" }} variant="outlined">
+                 <InputLabel htmlFor={`outlined-adornment-${label.toLowerCase().replace(/ /g, '-')}`}>{label}</InputLabel>
+                 <OutlinedInput 
+                 name={label.toLowerCase().replace(/ /g, '-')}
+                 label={label}
+                 id={`outlined-adornment-${label.toLowerCase().replace(/ /g, '-')}`}
+                 value={CV[label.toLowerCase().replace(/ /g, '-')] || ''}
+                 onChange={handleInputChange}
+                 />
                </FormControl>
              </Grid>
          ))}
@@ -52,8 +187,15 @@ function CreateCV() {
 
        {/* About yourself */}
        <FormControl sx={{ width:"100%", mt:"2", top: 20}} variant="outlined">
-            <InputLabel htmlFor="about-yourself">About yourself</InputLabel>
-            <OutlinedInput id="about-yourself" multiline rows={4} label="About yourself"/>
+            <InputLabel htmlFor="about yourself">About yourself</InputLabel>
+            <OutlinedInput 
+              label="About yourself"
+              name="aboutyourself"
+              id="outlined-adornment-about-yourself"
+              value={CV.aboutyourself || ''}
+              onChange={handleInputChange}
+            />
+
        </FormControl>
 
        {/* Submit button */}
@@ -65,8 +207,20 @@ function CreateCV() {
            pt:"30px"
          }}
        >
-         <Button variant="contained">Submit and Apply</Button>
+         <Button variant="contained" onClick={submitButton}>Submit and Apply</Button>
        </Box>
+
+       <Box>
+        <Typography
+          color={typeNotif ? "#4caf50" : "error"}
+          sx={{
+            display: hiddenNotif ? "none" : "block",
+            pt: "10px",
+          }}
+        >
+          {typeNotif ? "Success" : messNotif}
+        </Typography>
+        </Box>
      </Box>
    </Box>   
  );

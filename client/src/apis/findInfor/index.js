@@ -1,12 +1,15 @@
 import { url } from "~/apis/config";
 
-const loadLogin  = async () => {
-  return fetch(url.REST_API + "/loadlogin", {
-    method: "get",
+const findInfor  = async (UserName) => {
+  return fetch(url.REST_API + "/findinfor", {
+    method: "post",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(  
+        {
+            userName: UserName,
+        },
     ),
   })
     .then((response) => {
@@ -17,4 +20,4 @@ const loadLogin  = async () => {
     });
 };
 
-export default loadLogin ;
+export default findInfor ;

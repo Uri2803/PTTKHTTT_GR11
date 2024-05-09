@@ -3,13 +3,18 @@ import {
   Typography, 
   Button, 
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+
 import React, { useState, useEffect } from 'react';
 import api from "~/apis";
 
+import { useParams, useNavigate } from "react-router-dom";
+
 const JobDetail = () => {
+
+  const navigate = useNavigate(); 
+ 
+
   const {id} = useParams();
-  console.log('id: ',id)
   const [jobDetail, setJobDetail] = useState(null); 
   const formatNumber = (number) => {
     // Định dạng số với ba số mỗi lần
@@ -35,9 +40,10 @@ const JobDetail = () => {
   if (!jobDetail) {
     return <div>Loading...</div>;
   }
-
   const { posting, company } = jobDetail;
-  
+  const applyButton = () =>{
+    navigate(`/createCV?postingID=${posting.PostingID}`);
+  }
   return (
     <Box
       sx={{
@@ -124,8 +130,9 @@ const JobDetail = () => {
         </Box>
 
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button variant="contained" sx={{ backgroundColor: "#4caf50", color: "white" }}>
+          <Button variant="contained" sx={{ backgroundColor: "#4caf50", color: "white" }} onClick={applyButton}>
             Apply now
+            
           </Button>
         </Box>
       </Box>
@@ -141,7 +148,7 @@ const JobDetail = () => {
         }}
       >
         <Box sx={{ mb: 3 }}>
-          <Button variant="outlined" sx={{ width: "100%", mb: 3 }}>
+        <Button variant="outlined" sx={{ width: "100%", mb: 3 }} onClick={applyButton}>
             Create a cv to apply
           </Button>
           <Box sx={{ backgroundColor: "#ffffff", borderRadius: "5px", p: 3 }}>
