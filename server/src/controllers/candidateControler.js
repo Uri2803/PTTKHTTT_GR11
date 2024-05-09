@@ -47,15 +47,12 @@ let createCV = (req, res) =>{
 
 let findInfor = (req, res) =>{
     const {userName} = req.body;
-    console.log(userName)
     if(userName){
         candidate.findInfor(userName, (err, infor) =>{
             if(err){
-                console.log(err)
                 res.json({status: false, message: 'Lỗi không tìm thấy thông tin'})
             }
             else{
-                console.log(infor)
                 res.json({status: true, userInfor: infor})   
             }
         })

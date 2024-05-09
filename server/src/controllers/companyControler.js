@@ -25,7 +25,6 @@ let GetCompanyInfor = (req, res) => {
     const { companyID } = req.body
     company.GetInfor(companyID, (err, companyInfor)=>{
         if(err) {
-            console.log(err)
             res.json({status: false, message: 'Không tìm thấy company' })
         }
         else {
@@ -38,6 +37,5 @@ let GetCompanyInfor = (req, res) => {
 module.exports = {
     CreateCompany: CreateCompany,
     GetCompanyInfor: GetCompanyInfor
-
 
 }
