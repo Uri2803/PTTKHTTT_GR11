@@ -260,4 +260,6 @@ BEGIN
     INSERT INTO [APPLICATION]
     VALUES (@applicationID, @candidateid, @registfromID, null, null);
 END;
+GO
+
 

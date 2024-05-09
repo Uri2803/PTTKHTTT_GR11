@@ -24,9 +24,6 @@ function DefaultLayout({ props, children }) {
     navigate('/login');
   }
  
-
-
-  
   return (
     <>
       {console.log("layout", props)}

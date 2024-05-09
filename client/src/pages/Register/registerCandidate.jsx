@@ -8,7 +8,6 @@ import {
   OutlinedInput,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { theme } from "~/theme";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import HttpsIcon from "@mui/icons-material/Https";
@@ -21,6 +20,8 @@ import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import api from "~/apis";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+
 function RegisterCandidate() {
   const navigate = useNavigate(); 
   const [showPassword, setShowPassword] = useState(false);
@@ -52,10 +53,24 @@ function RegisterCandidate() {
     settypeNotif(res.status);
     setmessNotif(res?.message);
   }
-  if(typeNotif ){
-    navigate('/login');
-  }
-
+  const [countdown, setCountdown] = useState(5);
+  useEffect(() => {
+    if (typeNotif) {
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown > 0) {
+            return prevCountdown - 1;
+          } else {
+            clearInterval(timer);
+            navigate('/login');
+            return 0;
+          }
+        });
+      }, 1000);
+  
+      return () => clearInterval(timer);
+    }
+  }, [typeNotif, navigate]);  
   return (
     <Box
       sx={{
@@ -209,7 +224,7 @@ function RegisterCandidate() {
           }}
         >
           {typeNotif ?( 
-            "Success"
+            <Alert severity="success">Success: Đăng ký thành công {countdown}</Alert>
           ) : messNotif}
         </Typography>
         </Box>

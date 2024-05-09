@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import api from "~/apis";
 import { useNavigate } from "react-router-dom";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import Alert from '@mui/material/Alert';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,8 +52,6 @@ function Login() {
       }
 
     }
-    
-
   };
 
   return (
@@ -169,7 +168,10 @@ function Login() {
             pt: "10px",
           }}
         >
-          {typeNotif ? "Success" : messNotif}
+          {typeNotif ? "Success" :(
+            <Alert severity="error">{messNotif}</Alert>
+
+          ) }
         </Typography>
       </Box>
     </Box>

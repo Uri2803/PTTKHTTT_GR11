@@ -12,7 +12,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import React, { useState,  useEffect } from 'react';
 import api from "~/apis";
 import { useLocation } from "react-router-dom";
-
+import Alert from '@mui/material/Alert';
 
 
 function CreateCV() {
@@ -24,6 +24,7 @@ function CreateCV() {
   const userName=user.UserName;
   const [userInfor, setUserInfor] = useState(null); 
   console.log(user.UserName)
+  const navigate = useNavigate(); 
 
   useEffect(() => {    
     console.log('test')
@@ -42,7 +43,7 @@ function CreateCV() {
     };
 
     fetchData();
-  }, [userName]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -67,8 +68,27 @@ function CreateCV() {
     sethiddenNotif(false);
     settypeNotif(res.status);
     setmessNotif(res?.message);
+  
   }
 
+  const [countdown, setCountdown] = useState(5);
+  useEffect(() => {
+    if (typeNotif) {
+      const timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown > 0) {
+            return prevCountdown - 1;
+          } else {
+            clearInterval(timer);
+            navigate(`/jobdetail/${postingID}`);
+            return 0;
+          }
+        });
+      }, 1000);
+  
+      return () => clearInterval(timer);
+    }
+  }, [typeNotif, navigate]);
 
   return (
     <Box
@@ -157,13 +177,6 @@ function CreateCV() {
           </Grid>
           
        </Grid>
-
-
-
-        
-        
-        
-
        <Grid container spacing={2}  >
          {[
            "experience", 
@@ -218,12 +231,17 @@ function CreateCV() {
             pt: "10px",
           }}
         >
-          {typeNotif ? "Success" : messNotif}
+          {typeNotif ? (
+            <Alert severity="success">Success: Đăng ký thành công {'('} {countdown} {')'}</Alert>
+            )
+           :( <Alert severity="error">{messNotif}</Alert>)}
         </Typography>
         </Box>
+       
+       
      </Box>
    </Box>   
- );
+ )
 }
 
 export default CreateCV;
