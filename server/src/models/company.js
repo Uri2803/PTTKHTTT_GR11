@@ -103,11 +103,28 @@ let searchCompany = async (searchKey, result) => {
   }
 }
 
+let getCompanyByID = async (companyID, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('companyID', sql.VARCHAR(5), companyID)
+    const res =  await request.query('GET_COMPANY_BY_ID @companyID')
+    return result(null, res.recordset[0])
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+}
+
 module.exports = {
     Create: Create,
     GetInfor: GetInfor,
     getAllComapany: getAllComapany,
     getRecruimentRegist: getRecruimentRegist,
     getPosting: getPosting,
-    searchCompany: searchCompany
+    searchCompany: searchCompany,
+    getCompanyByID: getCompanyByID,
 }

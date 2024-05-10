@@ -37,6 +37,8 @@ let initWebRoutes = (app) => {
 
   app.post('/searchcompany', employeeControler.searchCompany)
 
+  app.post('/getcompanybyid', employeeControler.getCompanyByID)
+
   return app.use('/', route)
 }
 

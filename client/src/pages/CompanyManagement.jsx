@@ -13,14 +13,15 @@ import {
   Collapse,
   Grid ,
   Button,
-  TextField
+  TextField,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-
+import AddIcon from '@mui/icons-material/Add';
 
 import { KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from '@mui/icons-material';
 import api from "~/apis";
 import { theme } from '~/theme';
+import { useNavigate } from "react-router-dom";
 function CompanyManagement() {
     const [company, setCompany] = useState([]);
     const [open, setOpen] = useState([]);
@@ -60,11 +61,12 @@ function CompanyManagement() {
           console.error('Error fetching data:', error);
         }
     };
-
-    fetchData();
-
-  }, [searchKey]);
-
+    const delayFetchData = setTimeout(() => {
+        fetchData();
+      }, 500);
+  
+      return () => clearTimeout(delayFetchData);
+    }, [searchKey]);
   const handleRowClick = async (index, CompanyID) => {
     const newOpen = [...open];
     newOpen.fill(false);
@@ -80,6 +82,12 @@ function CompanyManagement() {
         console.error('Error fetching data:', error);
       }
   };
+  const navigate = useNavigate();
+  const buttonAddRegistForm = (companyID)=>{
+    navigate(`/createRecruitmentRegistration/?companyID=${companyID}`);
+
+  }
+
 
   return (
     <Box
@@ -134,13 +142,13 @@ function CompanyManagement() {
           <Table aria-label="collapsible table">
             <TableHead>
               <TableRow>
-                <TableCell />
-                <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Company Name</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Representative</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Tax Code</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Email</TableCell>
-                <TableCell align="right" sx={{ fontWeight: 'bold' }}>Phone Number</TableCell>
+                <TableCell align="center" />
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>ID</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Company Name</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Representative</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Tax Code</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Email</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Phone Number</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -155,11 +163,11 @@ function CompanyManagement() {
                     <TableCell component="th" scope="row">
                       {row.CompanyID}
                     </TableCell>
-                    <TableCell align="right">{row.Name}</TableCell>
-                    <TableCell align="right">{row.Representative}</TableCell>
-                    <TableCell align="right">{row.TaxCode}</TableCell>
-                    <TableCell align="right">{row.Email}</TableCell>
-                    <TableCell align="right">{row.PhoneNumber}</TableCell>
+                    <TableCell align="center">{row.Name}</TableCell>
+                    <TableCell align="center">{row.Representative}</TableCell>
+                    <TableCell align="center">{row.TaxCode}</TableCell>
+                    <TableCell align="center">{row.Email}</TableCell>
+                    <TableCell align="center">{row.PhoneNumber}</TableCell>
 
                   </TableRow>
                   
@@ -186,7 +194,17 @@ function CompanyManagement() {
                         <Grid item xs={4}>
                             <Typography variant="h5" gutterBottom component="div">
                                 Recruitment Regist
+                                <Button variant="outlined" sx={{
+                                        width: "10%",
+                                        border: 'none',
+                                        margin: "5px",
+                                    }}
+                                    onClick={() => buttonAddRegistForm(row.CompanyID)}
+                                    >
+                                   <AddIcon />
+                                </Button>
                             </Typography>
+                           
                             {regisFrom.map((form, index) =>{
                             return(
                                 <Button variant="outlined" sx={{

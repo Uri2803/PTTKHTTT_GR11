@@ -72,9 +72,28 @@ let searchCompany = (req, res) =>{
     }
 }
 
+let getCompanyByID = (req, res) =>{
+    const {companyID} = req.body;
+    if(companyID){
+        company.getCompanyByID(companyID, (err, company)=>{
+            if(err){
+                res.json({status: false, message: err})
+            }
+            else{
+                res.json({status: true, company: company})
+            }
+        })
+    }
+    else{
+        res.json({status: false, message: 'Không có companyID'})
+    }
+    
+}
+
 module.exports = {
     getAllCompany: getAllCompany,
     getRecruimentRegist: getRecruimentRegist,
     getPosting: getPosting,
-    searchCompany: searchCompany
+    searchCompany: searchCompany,
+    getCompanyByID: getCompanyByID
 }

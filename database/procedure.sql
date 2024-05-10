@@ -337,4 +337,18 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE GET_COMPANY_BY_ID
+    @companyid VARCHAR(5)
+AS
+BEGIN
+     IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT CO.*
+    FROM [COMPANY] CO
+    WHERE  CO.CompanyID = @companyid;
+END;
+GO
 

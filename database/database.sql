@@ -91,14 +91,17 @@ GO
 CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
   [RegistFormID] VARCHAR(5) PRIMARY KEY,
   [CompanyID] VARCHAR(5),
-  [PostingTime] DATE,
   [AdStartDate] DATE,
   [AdEndDate] DATE,
   [PositionVacancies] NVARCHAR(100),
   [NumberRecruitment] INT,
+  [JobDescription] NVARCHAR(500),
+  [Experience] NVARCHAR(100), 
+  [Level] NVARCHAR(100),
+  [ExpectedSalary] INT,
+  [JobType] NVARCHAR(100),
   [RequiredCandidates] NVARCHAR(500),
-  [AdType] NVARCHAR(100),
-  [Status] NVARCHAR(10),
+  [AdType] NVARCHAR(100)
 )
 GO
 

@@ -13,6 +13,7 @@ import Company from "./pages/createACompany";
 import EmployeePage from "./pages/employeePage";
 // import Layout from "./layout";
 import CompanyManagement from "./pages/CompanyManagement";
+import CreateRecruitmentRegistration from "./pages/createRecruitmentRegistration"
 
 const publicPath = [
   {
@@ -148,6 +149,18 @@ const publicPath = [
     ],
     propsLayout: {
         title: 'Company Management Page',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/createRecruitmentRegistration",
+    content: [
+      {
+        component: <CreateRecruitmentRegistration/>
+      }
+    ],
+    propsLayout: {
+        title: 'Create Recruitment Registration Form',
         icon: <PermIdentityIcon fontSize="large"/>
     }
   },
