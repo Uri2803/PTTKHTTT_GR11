@@ -21,6 +21,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import api from "~/apis";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import Alert from '@mui/material/Alert';
 
 function RegisterCandidate() {
   const navigate = useNavigate(); 
@@ -225,7 +226,7 @@ function RegisterCandidate() {
         >
           {typeNotif ?( 
             <Alert severity="success">Success: Đăng ký thành công {countdown}</Alert>
-          ) : messNotif}
+          ) : ( <Alert severity="error">{messNotif}</Alert>)}
         </Typography>
         </Box>
 

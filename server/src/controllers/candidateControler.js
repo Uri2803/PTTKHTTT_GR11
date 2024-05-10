@@ -1,6 +1,7 @@
 import { status } from "express/lib/response";
 import candidate from "../models/candidate"  
 
+
 let createCandidate = (req, res) =>{
     const {fullname, birthday, phonenumber, email, username, password} = req.body;
     if(fullname && birthday && phonenumber && email && username && password){
@@ -8,7 +9,7 @@ let createCandidate = (req, res) =>{
        
         candidate.Create(cd, (err, message) => {
             if(err){
-                res.json({status: false, message: 'Lỗi! không thẻ đăng ký, vui lòng thử lại'})
+                res.json({status: false, message: message})
             }
             else{
                 res.json({status: true, message: message })
@@ -63,8 +64,10 @@ let findInfor = (req, res) =>{
     }
 }
 
+
 module.exports = {
     createCandidate: createCandidate,
     createCV: createCV,
-    findInfor: findInfor
+    findInfor: findInfor,
+
 }

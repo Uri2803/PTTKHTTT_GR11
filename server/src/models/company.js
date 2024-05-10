@@ -39,7 +39,75 @@ let GetInfor = async (PostingID, result) => {
   }
 }
 
+let getAllComapany = async (result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    
+    const res =  await request.query('EXEC GET_ALL_COMPANY');
+    return result(null, res.recordset)
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+
+}
+
+let getRecruimentRegist = async (companyID, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('companyID', sql.VARCHAR(5), companyID)
+    const res =  await request.query('EXEC GET_RECRUITMENT_REGISTRATION @companyID')
+    return result(null, res.recordset)
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+}
+let getPosting = async (companyID, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('companyID', sql.VARCHAR(5), companyID)
+    const res =  await request.query('EXEC GET_POSTING @companyID')
+    return result(null, res.recordset)
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+}
+
+let searchCompany = async (searchKey, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('serchkey', sql.NVARCHAR(30), searchKey)
+    const res =  await request.query('EXEC SEARCH_COMPANY @serchkey')
+    return result(null, res.recordset)
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+}
+
 module.exports = {
     Create: Create,
-    GetInfor: GetInfor
+    GetInfor: GetInfor,
+    getAllComapany: getAllComapany,
+    getRecruimentRegist: getRecruimentRegist,
+    getPosting: getPosting,
+    searchCompany: searchCompany
 }

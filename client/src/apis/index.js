@@ -6,7 +6,10 @@ import getjobdetail from "./getJobDetail"
 import findInfor from "./findInfor"
 import createCandidate from "./createCandidate"
 import createcv from "./createCV"
-
+import getallcompany from "./getAllCompany"
+import getRecruimentRegist from "./getRecruimentRegist"
+import getPosting from "./getPosting"
+import searchCompany from "./searchCompany"
 const api = {
     login,
     example,
@@ -15,7 +18,12 @@ const api = {
     getjobdetail,
     findInfor,
     createCandidate,
-    createcv
+    createcv,
+    getallcompany,
+    getRecruimentRegist,
+    getPosting,
+    searchCompany,
+
     // , điền thêm tại đây
 }
 export default api

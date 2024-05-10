@@ -97,7 +97,8 @@ CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
   [PositionVacancies] NVARCHAR(100),
   [NumberRecruitment] INT,
   [RequiredCandidates] NVARCHAR(500),
-  [AdType] NVARCHAR(100)
+  [AdType] NVARCHAR(100),
+  [Status] NVARCHAR(10),
 )
 GO
 

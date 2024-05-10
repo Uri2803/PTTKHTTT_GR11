@@ -109,7 +109,7 @@ function Login() {
             }}
           />
         </FormControl>
-        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined" >
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
@@ -157,7 +157,7 @@ function Login() {
             pt: "10px",
           }}
         >
-          <Button variant="contained" onClick={submitButton}>
+          <Button variant="contained" onClick={submitButton} >
             Submit
           </Button>
         </Box>

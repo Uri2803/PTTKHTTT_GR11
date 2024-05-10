@@ -14,6 +14,7 @@ import api from "~/apis";
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -24,7 +25,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function HomePage() {
   const [postings, setPostings] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -66,6 +66,7 @@ function HomePage() {
         Welcome to our job recruitment website
       </Typography>
 
+        
       <Grid container spacing={2} sx={{ width: "100%" }}>
         {postings.map((post, index) => {
           return (

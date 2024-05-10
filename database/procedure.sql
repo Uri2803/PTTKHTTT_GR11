@@ -262,4 +262,79 @@ BEGIN
 END;
 GO
 
+CREATE OR ALTER PROCEDURE SEARCH_POSITION
+    @searchkey NVARCHAR(100)
+AS
+BEGIN
+    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Eperience, PI.JobType, CO.Name, CO.Address
+    FROM [POSTING_INFORMATION] PI 
+    JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
+    JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID
+    WHERE CO.Name LIKE '%' + @searchkey + '%' OR PI.[Position] LIKE '%' + @searchkey + '%' OR @searchkey =null;
+    
+END;
+GO
+
+
+
+CREATE OR ALTER PROCEDURE GET_ALL_COMPANY
+AS
+BEGIN
+    BEGIN
+        SELECT CO.*
+        FROM [COMPANY] CO  
+    END
+END;
+GO
+
+--EXEC GET_ALL_COMPANY;
+
+CREATE OR ALTER PROCEDURE GET_RECRUITMENT_REGISTRATION
+    @companyid VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT *
+    FROM [RECRUITMENT_REGISTRATION_FORM]
+    WHERE [CompanyID] = @companyid;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE GET_POSTING
+    @companyid VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT PI.PostingID, PI.[Position], COUNT(ARF.RegistFormID) AS 'CountApplicaton'
+    FROM [POSTING_INFORMATION] PI
+    JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON RRF.RegistFormID = PI.RegistFormID 
+    LEFT JOIN [APPLICATION_REGISTRATION_FORM] ARF ON ARF.PostingID = PI.PostingID
+    WHERE RRF.CompanyID = @companyid
+    GROUP BY PI.PostingID, PI.[Position];
+END;
+GO
+--EXEC GET_POSTING "CO002"
+
+
+
+CREATE OR ALTER PROCEDURE SEARCH_COMPANY
+    @searchkey NVARCHAR (30)
+AS
+BEGIN
+    BEGIN
+        SELECT CO.*
+        FROM [COMPANY] CO
+        WHERE CO.Name LIKE '%' + @searchkey + '%' OR CO.CompanyID LIKE '%' + @searchkey + '%';
+    END
+END;
+GO
+
 

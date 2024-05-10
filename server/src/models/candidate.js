@@ -15,8 +15,14 @@ let Create = async (cd, result) => {
     return result(null, 'Đăng ký thành công') 
   }
   catch (err) {
-    console.log(err)
-    return result(err, null)
+    console.log('err' ,err)
+    if(err.message==="Tài khoản đã tồn tại"){
+      return result(err, "Lỗi! Username đã tồn tại")
+    }
+    else{
+      return result(err, "Lỗi! không thẻ đăng ký, vui lòng thử lại")
+    }
+    
   }
   finally {
     sql.close()
