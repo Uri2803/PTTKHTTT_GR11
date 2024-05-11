@@ -322,9 +322,6 @@ BEGIN
 END;
 GO
 --EXEC GET_POSTING "CO002"
-
-
-
 CREATE OR ALTER PROCEDURE SEARCH_COMPANY
     @searchkey NVARCHAR (30)
 AS
@@ -349,6 +346,40 @@ BEGIN
     SELECT CO.*
     FROM [COMPANY] CO
     WHERE  CO.CompanyID = @companyid;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE CREATE_RECRUITMENT_REGISTRATION
+    @CompanyID VARCHAR(5),
+    @AdStartDate DATE,
+    @AdEndDate DATE,
+    @PositionVacancies NVARCHAR(100),
+    @NumberRecruitment INT,
+    @JobDescription NVARCHAR(500),
+    @Experience NVARCHAR(100),
+    @Level NVARCHAR(100),
+    @ExpectedSalary INT,
+    @JobType NVARCHAR(100),
+    @RequiredCandidates NVARCHAR(500),
+    @AdType NVARCHAR(100)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    IF (@AdStartDate < GETDATE())
+    BEGIN
+        RAISERROR ('Lỗi ngày đăng ', 16, 1);
+        RETURN; 
+    END
+    DECLARE @NextID INT;
+    DECLARE @registfromID CHAR(5);
+    SELECT @NextID = COUNT([CompanyID]) +1  FROM [COMPANY] 
+    SET @registfromID = 'RF' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+    INSERT INTO [RECRUITMENT_REGISTRATION_FORM]
+    VALUES (@registfromID, @CompanyID, @AdStartDate, @AdEndDate, @PositionVacancies, @NumberRecruitment, @JobDescription, @Experience, @Level, @ExpectedSalary, @JobType, @RequiredCandidates, @AdType, null);
 END;
 GO
 

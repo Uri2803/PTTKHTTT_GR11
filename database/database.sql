@@ -101,7 +101,8 @@ CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
   [ExpectedSalary] INT,
   [JobType] NVARCHAR(100),
   [RequiredCandidates] NVARCHAR(500),
-  [AdType] NVARCHAR(100)
+  [AdType] NVARCHAR(100),
+  [Status] NVARCHAR(30)
 )
 GO
 

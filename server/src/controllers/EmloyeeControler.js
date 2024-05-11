@@ -90,10 +90,59 @@ let getCompanyByID = (req, res) =>{
     
 }
 
+let createRegistForm = (req, res) =>{
+    const {CompanyID, 
+        AdStartDate, 
+        AdEndDate, 
+        PositionVacancies,
+        NumberRecruitment, 
+        JobDescription, 
+        Experience,
+        Level,
+        ExpectedSalary,
+        JobType,
+        RequiredCandidates,
+        AdType} =req.body;
+
+    if(CompanyID && AdStartDate&& AdEndDate &&PositionVacancies &&NumberRecruitment && 
+        JobDescription && 
+        Experience &&
+        Level &&
+        ExpectedSalary &&
+        JobType &&
+        RequiredCandidates &&
+        AdType){
+        const form = {CompanyID, 
+            AdStartDate, 
+            AdEndDate, 
+            PositionVacancies,
+            NumberRecruitment, 
+            JobDescription, 
+            Experience,
+            Level,
+            ExpectedSalary,
+            JobType,
+            RequiredCandidates,
+            AdType}
+        company.createRegistForm(form, (err, message)=>{
+            if(err){
+                res.json({status: false, message: 'Lỗi: không thể thêm công ty, vui lòng thử lại'})
+            }
+            else{
+                res.json({status: true, message:message})
+            }
+        })
+    }
+    else{
+        res.json({status: false, message: 'Vui lòng điền đầy đủ thông tin'})
+    }
+
+}
 module.exports = {
     getAllCompany: getAllCompany,
     getRecruimentRegist: getRecruimentRegist,
     getPosting: getPosting,
     searchCompany: searchCompany,
-    getCompanyByID: getCompanyByID
+    getCompanyByID: getCompanyByID,
+    createRegistForm: createRegistForm
 }

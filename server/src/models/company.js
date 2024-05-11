@@ -119,6 +119,33 @@ let getCompanyByID = async (companyID, result) => {
   }
 }
 
+let createRegistForm = async (form, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('companyID', sql.VARCHAR(5), form.CompanyID)
+    request.input('AdstartDate', sql.DATE, form.AdstartDate)
+    request.input('AdEndDate', sql.DATE, form.AdEndDate )
+    request.input('PositionVacancies', sql.NVARCHAR(100), form.PositionVacancies)
+    request.input('NumberRecruitment', sql.INT, form.NumberRecruiiment)
+    request.input('JobDescription', sql.NVARCHAR(500), form.JobDescription)
+    request.input('Experience', sql.NVARCHAR(100), form.Experience )
+    request.input('Level', sql.NVARCHAR(100), form.Level )
+    request.input('ExpectedSalary', sql.INT, form.ExpectedSalary)
+    request.input('JobType', sql.NVARCHAR(100), form.JobType)
+    request.input('RequiredCandidates', sql.NVARCHAR(500), form.RequiredCandidates)
+    request.input('AdType', sql.NVARCHAR(100), form.AdType)
+    const res = await request.query('EXEC CREATE_RECRUITMENT_REGISTRATION  @CompanyID, @AdStartDate, @AdEndDate, @PositionVacancies, @NumberRecruitment, @JobDescription, @Experience, @Level, @ExpectedSalary, @JobType, @RequiredCandidates, @AdType')
+    return result(null, 'Tạo phiếu đăng ký đăng tuyển dụng thành công') 
+  }
+  catch (err) {
+    return result(err, err)
+  }
+  finally {
+    sql.close()
+  }
+}
+
 module.exports = {
     Create: Create,
     GetInfor: GetInfor,
@@ -127,4 +154,5 @@ module.exports = {
     getPosting: getPosting,
     searchCompany: searchCompany,
     getCompanyByID: getCompanyByID,
+    createRegistForm: createRegistForm
 }

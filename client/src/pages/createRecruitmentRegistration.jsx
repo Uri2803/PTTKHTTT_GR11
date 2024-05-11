@@ -72,7 +72,7 @@ import {
     const [messNotif, setmessNotif] = useState('');
     const submitButton = async () =>{
         console.log('rss', registForm)
-      const res = await api.createcv(registForm);
+      const res = await api.createRecruimentRegist(registForm);
       sethiddenNotif(false);
       settypeNotif(res.status);
       setmessNotif(res?.message);
@@ -88,7 +88,7 @@ import {
               return prevCountdown - 1;
             } else {
               clearInterval(timer);
-              navigate(`/jobdetail/${postingID}`);
+              navigate(`/CompanyManagement`);
               return 0;
             }
           });
