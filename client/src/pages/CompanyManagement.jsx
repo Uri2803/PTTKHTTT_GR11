@@ -191,7 +191,7 @@ function CompanyManagement() {
                             </Grid>
                             
                         </Grid>
-                        <Grid item xs={4}>
+                        <Grid item xs={5}>
                             <Typography variant="h5" gutterBottom component="div">
                                 Recruitment Regist
                                 <Button variant="outlined" sx={{
@@ -227,7 +227,7 @@ function CompanyManagement() {
                             
                             </Typography>
                         </Grid>
-                        <Grid item xs={4} >
+                        <Grid item xs={3} >
                             <Typography variant="h5" gutterBottom component="div">
                                 Posting
                             </Typography>
