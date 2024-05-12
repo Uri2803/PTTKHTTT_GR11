@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import initWebRoutes from './routes/web'
-import session from 'express-session'
+const session = require('express-session');
 import cors from 'cors'
 require ('dotenv').config()
 let app = express()
@@ -20,8 +20,9 @@ app.get('/', (req, res) => {
 app.use(session({
   secret: 'mySecretKey',
   resave: false,
-  saveUninitialized: false
-}))
+  saveUninitialized: false,
+}));
+
 
 initWebRoutes(app)
 let port = process.env.PORT || 6969

@@ -1,16 +1,12 @@
 import { url } from "~/apis/config";
 
-const login  = async (username, password) => {
-  return fetch(url.REST_API + "/login", {
-    method: "post",
+const getallposting  = async () => {
+  return fetch(url.REST_API + "/getallposting", {
+    method: "get",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      {
-        UserName: username,
-        Password: password,
-      },
+    body: JSON.stringify(  
     ),
   })
     .then((response) => {
@@ -21,4 +17,4 @@ const login  = async (username, password) => {
     });
 };
 
-export default login;
+export default getallposting ;

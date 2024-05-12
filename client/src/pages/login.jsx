@@ -11,16 +11,18 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { theme } from "~/theme";
-import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
+
 import HttpsIcon from "@mui/icons-material/Https";
 import { Link } from "react-router-dom";
-
 import api from "~/apis";
+import { useNavigate } from "react-router-dom";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import Alert from '@mui/material/Alert';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [usrname, setusrname] = useState("");
+  const [username, setusrname] = useState("");
   const [password, setpassword] = useState("");
   const [typeNotif, settypeNotif] = useState(true);
   const [messNotif, setmessNotif] = useState("");
@@ -31,14 +33,25 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const navigate = useNavigate(); 
 
   const submitButton = async () => {
-    console.log(usrname, password);
-    const res = await api.login(usrname, password);
+    console.log(username, password);
+    const res = await api.login(username, password);
     console.log(res);
     sethiddenNotif(false);
     settypeNotif(res.status);
     setmessNotif(res?.message);
+    if(res.status){
+      localStorage.setItem('user', JSON.stringify(res));
+      if(res.Role === 'Nhân viên'){
+        navigate(`/employeePage`);
+      }
+      if(res.Role === 'Ứng viên'){
+        navigate('/homepage');
+      }
+
+    }
   };
 
   return (
@@ -81,22 +94,22 @@ function Login() {
         </Typography>
 
         <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-email">Email</InputLabel>
+          <InputLabel htmlFor="outlined-adornment-email">Username</InputLabel>
           <OutlinedInput
             id="outlined-adornment-email"
             startAdornment={
               <InputAdornment position="start">
-                <MailOutlinedIcon />
+                <PersonOutlineIcon/>
               </InputAdornment>
             }
-            label="Email"
-            value={usrname}
+            label="Username"
+            value={username}
             onChange={(e) => {
               setusrname(e.target.value);
             }}
           />
         </FormControl>
-        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined">
+        <FormControl sx={{ width: "100%", mt: 2, mb: 1 }} variant="outlined" >
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
@@ -133,7 +146,7 @@ function Login() {
             justifyContent: "flex-end",
           }}
         >
-          <Link to="/register">Don't have account ?</Link>
+          <Link to="/register_for_candidate">Don't have account ?</Link>
         </Box>
 
         <Box
@@ -144,7 +157,7 @@ function Login() {
             pt: "10px",
           }}
         >
-          <Button variant="contained" onClick={submitButton}>
+          <Button variant="contained" onClick={submitButton} >
             Submit
           </Button>
         </Box>
@@ -155,7 +168,10 @@ function Login() {
             pt: "10px",
           }}
         >
-          {typeNotif ? "Success" : messNotif}
+          {typeNotif ? "Success" :(
+            <Alert severity="error">{messNotif}</Alert>
+
+          ) }
         </Typography>
       </Box>
     </Box>

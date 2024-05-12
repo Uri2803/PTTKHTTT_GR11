@@ -45,26 +45,25 @@ CREATE TABLE [COMPANY] (
   [PhoneNumber] CHAR(10),
   [Address] NVARCHAR(100),
   [Representative] NVARCHAR(50),
-  [CompanyDicription] TEXT,
+  [CompanyDicription] NVARCHAR(300),
   [Censorship] NVARCHAR(10)
 )
 GO
 
 CREATE TABLE [CANDIDATE] (
-  [CandidateID] CHAR(5) PRIMARY KEY,
+  [CandidateID] VARCHAR(5) PRIMARY KEY,
   [UserName] VARCHAR(20),
   [FullName] NVARCHAR(50),
   [Birthday] DATE,
   [PhoneNumber] CHAR(10),
-  [Address] NVARCHAR(100)
+  [Email] VARCHAR(50)
 )
 GO
 
 CREATE TABLE [APPLICATION] (
   [ApplicationID] VARCHAR(5) PRIMARY KEY,
-  [DocumentID] VARCHAR(5),
+  [CandidateID] VARCHAR(5),
   [RegistFormID] VARCHAR(5),
-  [CandidateID] CHAR(5),
   [ApprovalDate] DATE,
   [ApplicationStatus] NVARCHAR(15)
 )
@@ -72,14 +71,18 @@ GO
 
 CREATE TABLE [APPLICATION_REGISTRATION_FORM] (
   [RegistFormID] VARCHAR(5) PRIMARY KEY,
-  [Position] NVARCHAR(20),
+  [PostingID] VARCHAR(5),
   [RegistDate] DATE,
-  [RegistFormStatus] NVARCHAR(15)
+  [YearExperience] NVARCHAR(30),
+  [Level] NVARCHAR(50),
+  [Skill] NVARCHAR(100),
+  [AboutYourself] NVARCHAR(300)
 )
 GO
 
 CREATE TABLE [DOCUMENT] (
   [DocumentID] VARCHAR(5) PRIMARY KEY,
+  [ApplicationID] VARCHAR(5),
   [DegreeType] NVARCHAR(20),
   [DateRange] DATE
 )
@@ -88,20 +91,32 @@ GO
 CREATE TABLE [RECRUITMENT_REGISTRATION_FORM] (
   [RegistFormID] VARCHAR(5) PRIMARY KEY,
   [CompanyID] VARCHAR(5),
-  [PostingTime] DATE,
-  [PositionVacancies] NVARCHAR(15),
+  [AdStartDate] DATE,
+  [AdEndDate] DATE,
+  [PositionVacancies] NVARCHAR(100),
   [NumberRecruitment] INT,
-  [RequiredCandidates] TEXT
+  [JobDescription] NVARCHAR(500),
+  [Experience] NVARCHAR(100), 
+  [Level] NVARCHAR(100),
+  [ExpectedSalary] INT,
+  [JobType] NVARCHAR(100),
+  [RequiredCandidates] NVARCHAR(500),
+  [AdType] NVARCHAR(100),
+  [Status] NVARCHAR(30)
 )
 GO
 
 CREATE TABLE [POSTING_INFORMATION] (
   [PostingID] VARCHAR(5) PRIMARY KEY,
   [RegistFormID] VARCHAR(5),
-  [JobDescription] TEXT,
-  [Welfare] TEXT,
+  [JobDescription] NVARCHAR(500),
+  [Position] NVARCHAR(100),
+  [Experience] NVARCHAR(100), 
+  [Level] NVARCHAR(100),
   [ExpectedSalary] INT,
-  [EmployeePerform] VARCHAR(5)
+  [JobType] NVARCHAR(100),
+  [EmployeePerform] VARCHAR(5),
+  [ContractType] NVARCHAR(100)
 )
 GO
 
@@ -173,8 +188,11 @@ GO
 ALTER TABLE [BILL] ADD FOREIGN KEY ([EmployeePerform]) REFERENCES [EMPLOYEE] ([EmployeeID])
 GO
 
-ALTER TABLE [APPLICATION] ADD FOREIGN KEY ([DocumentID]) REFERENCES [DOCUMENT] ([DocumentID])
+ALTER TABLE [DOCUMENT] ADD FOREIGN KEY ([ApplicationID]) REFERENCES [APPLICATION] ([ApplicationID])
 GO
 
 ALTER TABLE [APPLICATION] ADD FOREIGN KEY ([RegistFormID]) REFERENCES [APPLICATION_REGISTRATION_FORM] ([RegistFormID])
+GO
+
+ALTER TABLE [APPLICATION_REGISTRATION_FORM] ADD FOREIGN KEY ([PostingID]) REFERENCES [POSTING_INFORMATION] ([PostingID])
 GO

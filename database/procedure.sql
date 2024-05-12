@@ -18,6 +18,7 @@ END;
 GO
 
 
+
 -----//////-------
 
 -- Add thông tin nhân viên và tạo tài khoản cho nhân viên
@@ -57,7 +58,7 @@ CREATE OR ALTER PROCEDURE ADD_CANDIDATE
     @fullname NVARCHAR(50),
     @birthday DATE,
     @phonenumber CHAR(10),
-    @address NVARCHAR(50),
+    @email VARCHAR(50),
     @username VARCHAR(30),
     @password VARCHAR(300)
 AS
@@ -78,13 +79,15 @@ BEGIN
         SET @hashpassword = dbo.HashPassword(@password);  
         INSERT INTO [ACCOUNT]
         VALUES (@username, @hashpassword, @roleid); 
+        
         INSERT INTO [CANDIDATE]
-        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @address);  
+        VALUES (@CandidateID, @username, @fullname, @birthday, @phonenumber, @email);  
     END
 END;
 GO
 
-
+EXEC ADD_CANDIDATE 'Huỳnh Minh Quang', '2003-03-28', '0382333045', 'quận 7', 'huynhminhquang@gmail.com', 'hmq', '123'
+Go
 
 CREATE OR ALTER PROCEDURE LOGIN 
     @username NVARCHAR (20),
@@ -97,7 +100,7 @@ BEGIN
     BEGIN
        IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Nhân viên'
        BEGIN
-            SELECT E.EmployeeID AS ID, RL.RoleName 
+            SELECT AC.UserName, E.EmployeeID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC
             JOIN [ROLE] RL ON RL.RoleID = AC.RoleID
             JOIN [EMPLOYEE] E ON E.UserName = [AC].UserName
@@ -105,7 +108,7 @@ BEGIN
        END
        IF (SELECT RL.RoleName FROM [ACCOUNT] AC  JOIN [ROLE] RL ON RL.RoleID = AC.RoleID WHERE AC.UserName = @username) =N'Ứng viên'
        BEGIN
-            SELECT C.CandidateID AS ID, RL.RoleName 
+            SELECT AC.UserName, C.CandidateID AS ID, RL.RoleName 
             FROM [ACCOUNT] AC
             JOIN [ROLE] RL ON [RL].RoleID = [AC].RoleID
             JOIN [CANDIDATE] C ON C.UserName = [AC].UserName
@@ -118,6 +121,11 @@ BEGIN
     END
 END;
 GO
+
+EXEC LOGIN 'xlocnguyen', 'nxl1212003';
+GO
+
+
 
 -- Tạo company
 CREATE OR ALTER PROCEDURE CREATE_COMPANY
@@ -142,7 +150,6 @@ GO
 
 
 --EXEC FIND_USER 'minhquang2803';
-
 --Tìm thông tin ưng svieen và nhân viên thông qua username
 CREATE OR ALTER PROCEDURE FIND_INFOR
     @UserName VARCHAR(30)
@@ -151,20 +158,262 @@ BEGIN
     DECLARE @roleID CHAR(3);
     SELECT @roleID = [ACCOUNT].RoleID FROM [ACCOUNT] WHERE [UserName] = @UserName;
 
-    IF @roleID = 'RL1'
+    IF @roleID = '1'
     BEGIN
-        SELECT *
-        FROM [STAFF]
+        SELECT *, (SELECT RoleName FROM [ROLE] WHERE RoleID = '1') AS Role
+        FROM [EMPLOYEE]
         WHERE [UserName] = @UserName; 
     END
-    IF @roleID = 'RL2'
+    IF @roleID = '2'
     BEGIN
-        SELECT *
+        SELECT *, (SELECT RoleName FROM [ROLE] WHERE RoleID = '2') AS Role
         FROM [CANDIDATE]
         WHERE [UserName] = @UserName;
     END
 END;
-go
+GO
 
---EXEC FIND_INFOR 'minhquang2803';
+EXEC FIND_INFOR 'phamhong';
+
+-- Lấy thông tin công ty 
+GO
+
+CREATE OR ALTER PROCEDURE GET_COMPANY_INFOR
+    @postingid VARCHAR(5)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [POSTING_INFORMATION] WHERE [PostingID] = @postingid)
+    BEGIN
+        RAISERROR ('Không tìm thấy công ty', 16, 1);
+    END
+    ELSE
+    BEGIN
+        SELECT CO.*
+        FROM [COMPANY] CO
+        JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON RRF.CompanyID = CO.CompanyID
+        JOIN [POSTING_INFORMATION] PI ON PI.RegistFormID = RRF.RegistFormID  
+        WHERE PI.PostingID = @postingid;
+    END
+END;
+GO
+
+--EXEC GET_COMPANY_INFOR 'CO001';
+
+CREATE OR ALTER PROCEDURE GET_ALL_POSTING
+AS
+BEGIN
+    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Experience, PI.JobType, CO.Name, CO.Address
+    FROM [POSTING_INFORMATION] PI 
+    JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
+    JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID;
+END;
+GO
+
+--EXEC GET_ALL_POSTING ;
+
+CREATE OR ALTER PROCEDURE GET_JOB_DETAIL
+    @postingid VARCHAR(5)
+AS
+BEGIN
+    SELECT PI.PostingID, PI.[Position], PI.[Level], PI.JobType, PI.ExpectedSalary, PI.JobDescription, PI.Experience, PI.ContractType
+    FROM [POSTING_INFORMATION] PI
+    WHERE pi.PostingID = @postingid;
+END;
+GO
+EXEC GET_JOB_DETAIL 'PI001';
+GO
+
+
+CREATE OR ALTER PROCEDURE CREATE_CV 
+    @candidateid VARCHAR(5),
+    @postingid VARCHAR(5),
+    @experience NVARCHAR(30),
+    @level NVARCHAR(50),
+    @skill NVARCHAR(100),
+    @aboutyourself NVARCHAR(300)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [CANDIDATE] WHERE [CandidateID] = @candidateid)
+    BEGIN
+        RAISERROR ('Lỗi CandidateID', 16, 1);
+        RETURN; 
+    END
+    IF NOT EXISTS (SELECT * FROM [POSTING_INFORMATION] WHERE [PostingID] = @postingid)
+    BEGIN
+       RETURN RAISERROR ('Lỗi postingID', 16, 1);
+       RETURN; 
+    END
+    
+    DECLARE @NextID INT;
+    DECLARE @applicationID CHAR(5);
+    DECLARE @registfromID CHAR(5);
+
+    SELECT @NextID = COUNT([ApplicationID]) +1  FROM [APPLICATION] 
+    SET @applicationID = 'AP' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+    
+    SELECT @NextID = COUNT([RegistFormID]) +1  FROM [APPLICATION_REGISTRATION_FORM] 
+    SET @registfromID = 'AR' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+
+    INSERT INTO [APPLICATION_REGISTRATION_FORM]
+    VALUES (@registfromID, @postingid, GETDATE(), @experience, @level, @skill, @aboutyourself);
+
+    INSERT INTO [APPLICATION]
+    VALUES (@applicationID, @candidateid, @registfromID, null, null);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SEARCH_POSITION
+    @searchkey NVARCHAR(100)
+AS
+BEGIN
+    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Eperience, PI.JobType, CO.Name, CO.Address
+    FROM [POSTING_INFORMATION] PI 
+    JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
+    JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID
+    WHERE CO.Name LIKE '%' + @searchkey + '%' OR PI.[Position] LIKE '%' + @searchkey + '%' OR @searchkey =null;
+    
+END;
+GO
+
+
+
+CREATE OR ALTER PROCEDURE GET_ALL_COMPANY
+AS
+BEGIN
+    BEGIN
+        SELECT CO.*
+        FROM [COMPANY] CO  
+    END
+END;
+GO
+
+--EXEC GET_ALL_COMPANY;
+
+CREATE OR ALTER PROCEDURE GET_RECRUITMENT_REGISTRATION
+    @companyid VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT *
+    FROM [RECRUITMENT_REGISTRATION_FORM]
+    WHERE [CompanyID] = @companyid;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE GET_POSTING
+    @companyid VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT PI.PostingID, PI.[Position], COUNT(ARF.RegistFormID) AS 'CountApplicaton'
+    FROM [POSTING_INFORMATION] PI
+    JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON RRF.RegistFormID = PI.RegistFormID 
+    LEFT JOIN [APPLICATION_REGISTRATION_FORM] ARF ON ARF.PostingID = PI.PostingID
+    WHERE RRF.CompanyID = @companyid
+    GROUP BY PI.PostingID, PI.[Position];
+END;
+GO
+--EXEC GET_POSTING "CO002"
+CREATE OR ALTER PROCEDURE SEARCH_COMPANY
+    @searchkey NVARCHAR (30)
+AS
+BEGIN
+    BEGIN
+        SELECT CO.*
+        FROM [COMPANY] CO
+        WHERE CO.Name LIKE '%' + @searchkey + '%' OR CO.CompanyID LIKE '%' + @searchkey + '%';
+    END
+END;
+GO
+
+CREATE OR ALTER PROCEDURE GET_COMPANY_BY_ID
+    @companyid VARCHAR(5)
+AS
+BEGIN
+     IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    SELECT CO.*
+    FROM [COMPANY] CO
+    WHERE  CO.CompanyID = @companyid;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE CREATE_RECRUITMENT_REGISTRATION
+    @CompanyID VARCHAR(5),
+    @AdStartDate DATE,
+    @AdEndDate DATE,
+    @PositionVacancies NVARCHAR(100),
+    @NumberRecruitment INT,
+    @JobDescription NVARCHAR(500),
+    @Experience NVARCHAR(100),
+    @Level NVARCHAR(100),
+    @ExpectedSalary INT,
+    @JobType NVARCHAR(100),
+    @RequiredCandidates NVARCHAR(500),
+    @AdType NVARCHAR(100)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [COMPANY] WHERE [CompanyID] = @companyid)
+    BEGIN
+        RAISERROR ('Không tìm thấy company', 16, 1);
+        RETURN; 
+    END
+    IF (@AdStartDate < GETDATE())
+    BEGIN
+        RAISERROR ('Lỗi ngày đăng ', 16, 1);
+        RETURN; 
+    END
+    DECLARE @NextID INT;
+    DECLARE @registfromID CHAR(5);
+    SELECT @NextID = COUNT(RegistFormID) +1  FROM [RECRUITMENT_REGISTRATION_FORM] 
+    SET @registfromID = 'RF' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
+    INSERT INTO [RECRUITMENT_REGISTRATION_FORM]
+    VALUES (@registfromID, @CompanyID, @AdStartDate, @AdEndDate, @PositionVacancies, @NumberRecruitment, @JobDescription, @Experience, @Level, @ExpectedSalary, @JobType, @RequiredCandidates, @AdType, null);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE GET_RECRUITMENT_REGISTRATION_BY_ID
+    @registfromID VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [RECRUITMENT_REGISTRATION_FORM] WHERE [RegistFormID] = @registfromID)
+    BEGIN
+        RAISERROR ('Lỗi thông tin', 16, 1);
+        RETURN; 
+    END
+    SELECT *
+    FROM [RECRUITMENT_REGISTRATION_FORM]
+    WHERE [RegistFormID] = @registfromID;
+END;
+GO
+EXEC GET_RECRUITMENT_REGISTRATION_BY_ID 'RF001'
+
+EXEC GET_ALL_POSTING;
+GO
+
+CREATE OR ALTER PROCEDURE UPDATE_STATUS_POSTING
+    @registfromID VARCHAR(5)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [RECRUITMENT_REGISTRATION_FORM] WHERE [RegistFormID] = @registfromID)
+    BEGIN
+        RAISERROR ('Lỗi thông tin', 16, 1);
+        RETURN; 
+    END
+    UPDATE [RECRUITMENT_REGISTRATION_FORM]
+    SET [Status] = ISNULL([Status], N'') + N'Đã đăng bài'
+    WHERE [RegistFormID] =@registfromID;
+    
+END;
 

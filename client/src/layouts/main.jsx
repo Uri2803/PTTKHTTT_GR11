@@ -1,11 +1,29 @@
 /* eslint-disable react/prop-types */
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { theme } from "~/theme";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 function DefaultLayout({ props, children }) {
-
+  
+  // const user = {
+  //   ID : localStorage.getItem('ID'),
+  //   UserName: localStorage.getItem('UserName'),
+  //   Role: localStorage.getItem('Role')
+  // }
+  const navigate = useNavigate();
+  const dataUser = localStorage.getItem('user')
+  const user = JSON.parse(dataUser);
+  const logout = () => {
+    localStorage.removeItem('user');
+    navigate('/login');
+  };
+  const login =() =>{
+    navigate('/login');
+  }
+ 
   return (
     <>
       {console.log("layout", props)}
@@ -59,21 +77,37 @@ function DefaultLayout({ props, children }) {
                 alignItems: "center",
               }}
             >
-              {props?.isLogin ? (
-                props?.icon ? (
-                  <>
-                    {props.icon}
-                    <Typography variant="body1">Mạch Vĩ Kiệt</Typography>
-                  </>
+              {user ? (
+                <Box sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                  <Typography variant="h6"> {user.Role}: {user.UserName}</Typography>
+                  <Button variant="outlined" sx={{ width: "60%", mb: 1 , height: "30px"}} onClick={logout}>
+                     Logout
+                  </Button>
+                </Box>
+                
+                
+                   
                 ) : (
-                  <>
-                    <CheckBoxOutlineBlankOutlinedIcon />
-                  </>
-                )
-              ) : (
-                <Link to="/login">Vui lòng đăng nhập</Link>
+                  <Box >
+                    <Button variant="outlined" sx={{ width: "150%", mb: 1}} onClick={login} >
+                     login
+                  </Button>
+                  </Box>
+                  
+
               )}
             </Box>
+          
+            
+    
+            
           </Container>
         </Box>
 

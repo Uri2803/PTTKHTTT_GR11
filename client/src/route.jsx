@@ -10,7 +10,11 @@ import CreateCompany from "./pages/createCompany";
 // import JobDetail from "./pages/detailJob";
 import JobDetail from "./pages/jobDetail";
 import Company from "./pages/createACompany";
+import EmployeePage from "./pages/employeePage";
 // import Layout from "./layout";
+import CompanyManagement from "./pages/CompanyManagement";
+import CreateRecruitmentRegistration from "./pages/createRecruitmentRegistration"
+import RecruitmentRegistForm from "./pages/recruitmentRegistForm"
 
 const publicPath = [
   {
@@ -69,6 +73,18 @@ const publicPath = [
     path: "/",
     content: [
       {
+        component: <Login />,
+      },
+    ],
+    propsLayout: {
+      title: "COMPANY ABC",
+      icon: <PermIdentityIcon fontSize="large" />,
+    },
+  },
+  {
+    path: "/homepage",
+    content: [
+      {
         component: <HomePage />,
       },
     ],
@@ -102,7 +118,7 @@ const publicPath = [
     }
   },
   {
-    path: "/jobdetail",
+    path: "/jobdetail/:id",
     content: [
       {
         component: <JobDetail />,
@@ -124,6 +140,54 @@ const publicPath = [
       title: "Create a Company",
       icon: <PermIdentityIcon fontSize="large" />,
     },
+  },
+  {
+    path: "/employeePage",
+    content: [
+      {
+        component: <EmployeePage/>
+      }
+    ],
+    propsLayout: {
+        title: 'Employee Page',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/CompanyManagement",
+    content: [
+      {
+        component: <CompanyManagement/>
+      }
+    ],
+    propsLayout: {
+        title: 'Company Management Page',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/createRecruitmentRegistration",
+    content: [
+      {
+        component: <CreateRecruitmentRegistration/>
+      }
+    ],
+    propsLayout: {
+        title: 'Create Recruitment Registration Form',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
+  },
+  {
+    path: "/recruitmentRegistForm",
+    content: [
+      {
+        component: <RecruitmentRegistForm/>
+      }
+    ],
+    propsLayout: {
+        title: 'Recruitment Registration Form',
+        icon: <PermIdentityIcon fontSize="large"/>
+    }
   },
 
 ];

@@ -1,16 +1,15 @@
 import { url } from "~/apis/config";
 
-const login  = async (username, password) => {
-  return fetch(url.REST_API + "/login", {
+const getCompanyByID  = async (companyID) => {
+  return fetch(url.REST_API + "/getcompanybyid", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      {
-        UserName: username,
-        Password: password,
-      },
+    body: JSON.stringify(  
+        {
+            companyID: companyID,
+        },
     ),
   })
     .then((response) => {
@@ -21,4 +20,4 @@ const login  = async (username, password) => {
     });
 };
 
-export default login;
+export default getCompanyByID ;

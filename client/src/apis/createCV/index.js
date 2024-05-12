@@ -1,15 +1,19 @@
 import { url } from "~/apis/config";
 
-const login  = async (username, password) => {
-  return fetch(url.REST_API + "/login", {
+const createcv  = async (CV) => {
+  return fetch(url.REST_API + "/createCV", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(
       {
-        UserName: username,
-        Password: password,
+        CandidateID: CV.candidateid,
+        PostingID: CV.postingid,
+        Experience: CV.experience,
+        Level: CV.level,
+        Skill: CV.skill,
+        AboutYourself: CV.aboutyourself
       },
     ),
   })
@@ -21,4 +25,4 @@ const login  = async (username, password) => {
     });
 };
 
-export default login;
+export default createcv;

@@ -1,16 +1,15 @@
 import { url } from "~/apis/config";
 
-const login  = async (username, password) => {
-  return fetch(url.REST_API + "/login", {
+const searchCompany  = async (searchKey) => {
+  return fetch(url.REST_API + "/searchcompany", {
     method: "post",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(
-      {
-        UserName: username,
-        Password: password,
-      },
+    body: JSON.stringify(  
+        {
+            searchKey: searchKey,
+        },
     ),
   })
     .then((response) => {
@@ -21,4 +20,4 @@ const login  = async (username, password) => {
     });
 };
 
-export default login;
+export default searchCompany  ;
