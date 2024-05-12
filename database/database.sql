@@ -111,7 +111,7 @@ CREATE TABLE [POSTING_INFORMATION] (
   [RegistFormID] VARCHAR(5),
   [JobDescription] NVARCHAR(500),
   [Position] NVARCHAR(100),
-  [Eperience] NVARCHAR(100), 
+  [Experience] NVARCHAR(100), 
   [Level] NVARCHAR(100),
   [ExpectedSalary] INT,
   [JobType] NVARCHAR(100),

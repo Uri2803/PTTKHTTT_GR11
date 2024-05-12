@@ -48,7 +48,7 @@ function Login() {
         navigate(`/employeePage`);
       }
       if(res.Role === 'Ứng viên'){
-        navigate('/');
+        navigate('/homepage');
       }
 
     }
@@ -146,7 +146,7 @@ function Login() {
             justifyContent: "flex-end",
           }}
         >
-          <Link to="/register">Don't have account ?</Link>
+          <Link to="/register_for_candidate">Don't have account ?</Link>
         </Box>
 
         <Box

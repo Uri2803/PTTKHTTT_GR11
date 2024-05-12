@@ -202,7 +202,7 @@ GO
 CREATE OR ALTER PROCEDURE GET_ALL_POSTING
 AS
 BEGIN
-    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Eperience, PI.JobType, CO.Name, CO.Address
+    SELECT PI.PostingID, CO.CompanyID, PI.[Level], PI.[Position], PI.ExpectedSalary, PI.Experience, PI.JobType, CO.Name, CO.Address
     FROM [POSTING_INFORMATION] PI 
     JOIN [RECRUITMENT_REGISTRATION_FORM] RRF ON PI.RegistFormID = RRF.RegistFormID
     JOIN [COMPANY] CO ON CO.CompanyID = RRF.CompanyID;
@@ -215,7 +215,7 @@ CREATE OR ALTER PROCEDURE GET_JOB_DETAIL
     @postingid VARCHAR(5)
 AS
 BEGIN
-    SELECT PI.PostingID, PI.[Position], PI.[Level], PI.JobType, PI.ExpectedSalary, PI.JobDescription, PI.Eperience, PI.ContractType
+    SELECT PI.PostingID, PI.[Position], PI.[Level], PI.JobType, PI.ExpectedSalary, PI.JobDescription, PI.Experience, PI.ContractType
     FROM [POSTING_INFORMATION] PI
     WHERE pi.PostingID = @postingid;
 END;
@@ -376,10 +376,44 @@ BEGIN
     END
     DECLARE @NextID INT;
     DECLARE @registfromID CHAR(5);
-    SELECT @NextID = COUNT([CompanyID]) +1  FROM [COMPANY] 
+    SELECT @NextID = COUNT(RegistFormID) +1  FROM [RECRUITMENT_REGISTRATION_FORM] 
     SET @registfromID = 'RF' + RIGHT('0000' + CAST(@NextID AS VARCHAR(5)), 3);
     INSERT INTO [RECRUITMENT_REGISTRATION_FORM]
     VALUES (@registfromID, @CompanyID, @AdStartDate, @AdEndDate, @PositionVacancies, @NumberRecruitment, @JobDescription, @Experience, @Level, @ExpectedSalary, @JobType, @RequiredCandidates, @AdType, null);
 END;
 GO
+
+CREATE OR ALTER PROCEDURE GET_RECRUITMENT_REGISTRATION_BY_ID
+    @registfromID VARCHAR(5)
+AS 
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [RECRUITMENT_REGISTRATION_FORM] WHERE [RegistFormID] = @registfromID)
+    BEGIN
+        RAISERROR ('Lỗi thông tin', 16, 1);
+        RETURN; 
+    END
+    SELECT *
+    FROM [RECRUITMENT_REGISTRATION_FORM]
+    WHERE [RegistFormID] = @registfromID;
+END;
+GO
+EXEC GET_RECRUITMENT_REGISTRATION_BY_ID 'RF001'
+
+EXEC GET_ALL_POSTING;
+GO
+
+CREATE OR ALTER PROCEDURE UPDATE_STATUS_POSTING
+    @registfromID VARCHAR(5)
+AS
+BEGIN
+    IF NOT EXISTS (SELECT * FROM [RECRUITMENT_REGISTRATION_FORM] WHERE [RegistFormID] = @registfromID)
+    BEGIN
+        RAISERROR ('Lỗi thông tin', 16, 1);
+        RETURN; 
+    END
+    UPDATE [RECRUITMENT_REGISTRATION_FORM]
+    SET [Status] = ISNULL([Status], N'') + N'Đã đăng bài'
+    WHERE [RegistFormID] =@registfromID;
+    
+END;
 

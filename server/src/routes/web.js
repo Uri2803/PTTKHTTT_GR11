@@ -41,6 +41,8 @@ let initWebRoutes = (app) => {
 
   app.post('/createrecruimentregist', employeeControler.createRegistForm)
 
+  app.post('/cruimentregistform', employeeControler.getRecruimentRegistByID)
+
   return app.use('/', route)
 }
 

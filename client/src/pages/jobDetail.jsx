@@ -125,7 +125,7 @@ const JobDetail = () => {
             <Button variant="outlined">{formatNumber(posting.ExpectedSalary)}$ </Button>
             <Button variant="outlined">{posting.JobType}</Button>
             <Button variant="outlined">{posting.Level}</Button>
-            <Button variant="outlined">{posting.Eperience}</Button>
+            <Button variant="outlined">{posting.Experience}</Button>
           </Box>
         </Box>
 
