@@ -146,6 +146,22 @@ let createRegistForm = async (form, result) => {
   }
 }
 
+let getRecruimentRegistByID = async (registFormID, result) => {
+  try {
+    await connectToDatabase()
+    const request = con.request()
+    request.input('registFormID', sql.VARCHAR(5), registFormID)
+    const res =  await request.query('EXEC GET_RECRUITMENT_REGISTRATION_BY_ID @registFormID')
+    return result(null, res.recordset[0])
+  }
+  catch (err) {
+    return result(err, null)
+  }
+  finally {
+    sql.close()
+  }
+}
+
 module.exports = {
     Create: Create,
     GetInfor: GetInfor,
@@ -154,5 +170,6 @@ module.exports = {
     getPosting: getPosting,
     searchCompany: searchCompany,
     getCompanyByID: getCompanyByID,
-    createRegistForm: createRegistForm
+    createRegistForm: createRegistForm,
+    getRecruimentRegistByID: getRecruimentRegistByID
 }

@@ -49,30 +49,6 @@ const EmployeePage = () => {
             sx={{
               width: "100%",
               mb: 2,
-              bgcolor: "#2196f3",
-              color: "white",
-            }}
-            onClick={() => handleButtonClick("/createCV")}
-          >
-            Create CV
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              width: "100%",
-              mb: 2,
-              bgcolor: "#f44336",
-              color: "white",
-            }}
-            onClick={() => handleButtonClick("/CreatePost")}
-          >
-            Create Post
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              width: "100%",
-              mb: 2,
               bgcolor: "#FFA500",
               color: "white",
             }}

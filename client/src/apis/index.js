@@ -12,6 +12,7 @@ import getPosting from "./getPosting"
 import searchCompany from "./searchCompany"
 import getCompanyByID from "./getCompanyByID"
 import createRecruimentRegist from "./createRecruimentRegistForm"
+import getRecruimentRegistByID from "./getRecruimentRegistByID"
 const api = {
     login,
     example,
@@ -27,6 +28,7 @@ const api = {
     searchCompany,
     getCompanyByID,
     createRecruimentRegist,
+    getRecruimentRegistByID,
 
     // , điền thêm tại đây
 }

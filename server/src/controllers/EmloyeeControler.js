@@ -138,11 +138,31 @@ let createRegistForm = (req, res) =>{
     }
 
 }
+
+let getRecruimentRegistByID = (req, res) =>{
+    const {registFormID} = req.body;
+    if(registFormID){
+        company.getRecruimentRegistByID(registFormID, (err, registForm)=>{
+            if(err){
+                console.log(err)
+                res.json({status: false, message: err})
+            }
+            else{
+                res.json({status: true, registForm: registForm})
+            }
+        })
+    }
+    else{
+        res.json({status: false, message: 'Không có Registform'})
+    }
+     
+}
 module.exports = {
     getAllCompany: getAllCompany,
     getRecruimentRegist: getRecruimentRegist,
     getPosting: getPosting,
     searchCompany: searchCompany,
     getCompanyByID: getCompanyByID,
-    createRegistForm: createRegistForm
+    createRegistForm: createRegistForm,
+    getRecruimentRegistByID: getRecruimentRegistByID
 }

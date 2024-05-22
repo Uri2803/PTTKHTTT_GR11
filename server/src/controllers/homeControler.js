@@ -19,7 +19,7 @@ let login = (req, res) => {
     })
   }
   else {
-    res.json({ status: false, message: 'Vui lòng nhập UserName VÀ Password' })
+    res.json({ status: false, message: 'Vui lòng nhập Username và Password' })
   }
 }
 

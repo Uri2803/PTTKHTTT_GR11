@@ -87,6 +87,9 @@ function CompanyManagement() {
     navigate(`/createRecruitmentRegistration/?companyID=${companyID}`);
 
   }
+  const route = (path)=>{
+    navigate(path);
+  }
 
 
   return (
@@ -191,7 +194,7 @@ function CompanyManagement() {
                             </Grid>
                             
                         </Grid>
-                        <Grid item xs={5}>
+                        <Grid item xs={4}>
                             <Typography variant="h5" gutterBottom component="div">
                                 Recruitment Regist
                                 <Button variant="outlined" sx={{
@@ -213,6 +216,7 @@ function CompanyManagement() {
                                         color: form.Status ? "#4caf50" : "#000000",
                                         borderColor: form.Status ? "#4caf50" : "#000000"
                                     }}
+                                    onClick={() => {route(`/recruitmentRegistForm?ID=${form.RegistFormID}`)}} 
                                     >
                                     <Typography variant="body2" gutterBottom component="div">
                                         {form.RegistFormID} - {form.PositionVacancies}  {form.Status}
@@ -227,7 +231,7 @@ function CompanyManagement() {
                             
                             </Typography>
                         </Grid>
-                        <Grid item xs={3} >
+                        <Grid item xs={4} >
                             <Typography variant="h5" gutterBottom component="div">
                                 Posting
                             </Typography>
