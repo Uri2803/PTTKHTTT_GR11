@@ -127,7 +127,7 @@ function HomePage() {
                     display: "flex",
                   }}
                 >
-                  {[post.Eperience, formatNumber(post.ExpectedSalary) + '$', post.Level, post.JobType].map(
+                  {[post.Experience, formatNumber(post.ExpectedSalary) + '$', post.Level, post.JobType].map(
                     (title, index) => {
                       return (
                         <Button 

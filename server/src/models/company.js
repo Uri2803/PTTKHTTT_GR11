@@ -124,7 +124,7 @@ let createRegistForm = async (form, result) => {
     await connectToDatabase()
     const request = con.request()
     request.input('companyID', sql.VARCHAR(5), form.CompanyID)
-    request.input('AdstartDate', sql.DATE, form.AdstartDate)
+    request.input('AdstartDate', sql.DATE, form.AdStartDate)
     request.input('AdEndDate', sql.DATE, form.AdEndDate )
     request.input('PositionVacancies', sql.NVARCHAR(100), form.PositionVacancies)
     request.input('NumberRecruitment', sql.INT, form.NumberRecruiiment)
